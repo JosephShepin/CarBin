@@ -30,7 +30,7 @@ class Car:
         return {
             'make'              : data['attributes']['make'],
             'model'             : data['attributes']['model'],
-            'year'              : int(data['attributes']['year']),
+            'year'              : data['attributes']['year'],
             'trim'              : data['attributes']['trim'],
             'style'             : data['attributes']['style'],
             'type'              : data['model_body'],
@@ -73,8 +73,8 @@ class Car:
         data = json.loads(open('electric-cars.json','r').read())['Electric Cars'][num]
         return {
             'make'              : data['Make'],
-            'model'             : data['Model'],
-            'year'              : int(data['Year']),
+            'model'             : data['Name'],
+            'year'              : data['Year'],
             'trim'              : data['Trim'],
             'style'             : 'ELECTRIC',
             'type'              : data['Type'],
@@ -84,23 +84,23 @@ class Car:
                 'units'     : 'USD'
             },
             'top_speed'         : {
-                'number'    : float(data['Top Speed']),
+                'number'    : 0.0,#float(data['Top Speed']),
                 'units'     : 'kilometers/hour'
             },
             'torque'            : {
-                'number'    : float(data['Mean Torque']),
+                'number'    : 0.0,#float(data['Torque']),
                 'units'     : 'newtonmeters'
             },
             'horsepower'        : {
-                'number'    : float(data['Mean Horsepower']),
+                'number'    : 0.0,#float(data['Horsepower']),
                 'units'     : 'horsepower'
             },
             'acceleration'      : {
-                'number'    : float(data['Avg Acceleration']),
+                'number'    : float(data['Acceleration']),
                 'units'     : '60 miles/h/s'
             },
             'fuel_capacity'     : {
-                'number'    : float(data['Mean Range']),
+                'number'    : 0.0,#float(data['Fuel Capacity']),
                 'units'     : ''
             },
             'city_mileage'      : {
@@ -157,7 +157,7 @@ class Car:
 
     @staticmethod
     def calculate_percent_change(x: float,y: float):
-        return -100*(1-x/y)
+        return 100*(1-x/y)
 
     def __str__(self):
          return f'''
