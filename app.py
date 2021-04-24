@@ -6,6 +6,10 @@ app = Flask(__name__)
 def main():
     return render_template('collect.html')
 
+@app.route('/results')
+def results():
+    return render_template('results.html')
+
 @app.route('/postData', methods=["POST","GET"])
 def postData():
     return {"h":"i"}
