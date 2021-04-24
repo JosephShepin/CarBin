@@ -18,7 +18,8 @@ def results():
 def postData():
     vin = request.args.get('vin', "")
     car = Car(vin) 
-    return car.__str__()
+    return render_template('results.html',results=car)
+
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
