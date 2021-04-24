@@ -1,23 +1,13 @@
 import requests, json, re
 
-not_word_pattern = re.compile('\W')
-
-def fuzzy_string_match(str1: str, str2: str):
-    str1 = re.sub(not_word_pattern, '', str1)
-    str2 = re.sub(not_word_pattern, '', str2)
-    return str1.lower() == str2.lower();
-
 class Car:
 
     def __init__(self, id: str, is_electric: bool = False):
-
         self._is_electric = is_electric
-
         if (is_electric):
             data = self.get_electric_data(id)
         else:
             data = self.get_gas_data(id)
-
         self._make            = data['make']
         self._model           = data['model']
         self._year            = data['year']
@@ -34,12 +24,9 @@ class Car:
         self._city_mileage    = data['city_mileage']
         self._highway_mileage = data['highway_mileage']
 
-
     def get_gas_data(self, vin: str):
-
         data = self.fetch_carxse(vin)
         data.update(self.fetch_carqueryapi(data['attributes']['make'], data['attributes']['model'], data['attributes']['year'], data['attributes']['trim']))
-
         return {
             'make'              : data['attributes']['make'],
             'model'             : data['attributes']['model'],
@@ -83,9 +70,7 @@ class Car:
         }
 
     def get_electric_data(self, num: str):
-
         data = json.loads(open('electric-cars.json','r').read())['Electric Cars'][num]
-
         return {
             'make'              : data['Make'],
             'model'             : data['Name'],
@@ -128,30 +113,46 @@ class Car:
             }
         }
 
-    @staticmethod
+    def compare(self, other):
+        return {
+            'price'           : self.calculate_percent_change(other._price['number'],self._price['number']),
+            'top_speed'       : self.calculate_percent_change(other._top_speed['number'],self._top_speed['number']),
+            'torque'          : self.calculate_percent_change(other._torque['number'],self._torque['number']),
+            'horsepower'      : self.calculate_percent_change(other._horsepower['number'],self._horsepower['number']),
+            'acceleration'    : self.calculate_percent_change(other._acceleration['number'],self._acceleration['number']),
+            'fuel_capacity'   : self.calculate_percent_change(other._fuel_capacity['number'],self._fuel_capacity['number']),
+            'city_mileage'    : self.calculate_percent_change(other._city_mileage['number'],self._city_mileage['number']),
+            'highway_mileage' : self.calculate_percent_change(other._highway_mileage['number'],self._highway_mileage['number'])
+        }
+
     def fetch_carxse(vin: str):
         url = 'https://storage.googleapis.com/car-switch/respoonse.json'
         #url =  f'https://api.carsxe.com/specs?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&vin={vin}
         r = requests.get(url)
         return json.loads(r.text)
 
-    @staticmethod
     def fetch_carqueryapi(make: str, model: str, year: str, trim: str):
         url = f'https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getTrims&make={make}&year={year}'
         headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
         r = requests.get(url, headers=headers)
         for entry in json.loads(r.text[2:-2])['Trims']:
-            if fuzzy_string_match(entry['model_name'] + entry['model_trim'], model + trim):
+            if self.fuzzy_string_match(entry['model_name'] + entry['model_trim'], model + trim):
                 return entry
         return {}
 
-    @staticmethod
     def fetch_image(make: str, model:str):
         url = f"http://api.carsxe.com/images?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&make={make}&model={model}"
-        print(url)
         r = requests.get(url)
-        data = json.loads(r.text)
-        return data["images"][0]["link"]
+        return json.loads(r.text)["images"][0]["link"]
+
+    def fuzzy_string_match(str1: str, str2: str):
+        not_word_pattern = re.compile('\W')
+        str1 = re.sub(not_word_pattern, '', str1)
+        str2 = re.sub(not_word_pattern, '', str2)
+        return str1.lower() == str2.lower()
+
+    def calculate_percent_change(x: float,y: float):
+        return 100*(1-x/y)
 
     def __str__(self):
          return f'''
@@ -172,9 +173,3 @@ Fuel Capacity: {self._fuel_capacity['number']} ({self._fuel_capacity['units']})
 City Mileage: {self._city_mileage['number']} ({self._city_mileage['units']})
 Highway Mileage: {self._highway_mileage['number']} ({self._highway_mileage['units']})
 '''
-
-if __name__ == '__main__':
-    car = Car('JTJZK1BA1D2009651')
-    print(car)
-    car = Car('0', True)
-    print(car)
