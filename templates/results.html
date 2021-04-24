@@ -42,8 +42,8 @@
 
     .percentLabel {
         position: relative;
-        top: 85px;
-        right: -6px
+        top: 90px;
+        right: -2px
     }
 
     .miniCard {
@@ -90,25 +90,36 @@
             </div>
         </div>
         <br>
-        <br>
-        <h2>Overview</h2>
-        <hr>
-        <div style="display: flex; justify-content:center;">
+        <!-- <br>
+        <h2>Stats at a glance</h2>
+        <p>Based on the states of your vehicle vs the Tesla Model Y, </p>
+        <hr> -->
+        <!-- <div style="display: flex; justify-content:center;">
             <div class='shadow-sm p-3 bg-white rounded miniCard space'>
-                <p class="barTopLabel">Cost Effectiveness</p>
+                <p class="barTopLabel">5 Year Carbon Savings</p>
                 <div id="bar1" class="bar">
                     <h3 class="percentLabel"></h3>
                 </div>
-                <p class="barBottomLabel">Viable</p>
             </div>
             <div class='shadow-sm p-3 bg-white rounded miniCard space'>
-                <p class="barTopLabel">Performance</p>
+                <p class="barTopLabel">Initial Cost</p>
                 <div id="bar2" class="bar">
                     <h3 class="percentLabel"></h3>
                 </div>
-                <p class="barBottomLabel">Comparable</p>
             </div>
-        </div>
+            <div class='shadow-sm p-3 bg-white rounded miniCard space'>
+                <p class="barTopLabel">5 year Savings</p>
+                <div id="bar3" class="bar">
+                    <h3 class="percentLabel"></h3>
+                </div>
+            </div>
+            <div class='shadow-sm p-3 bg-white rounded miniCard space'>
+                <p class="barTopLabel">Performance Comparison</p>
+                <div id="bar4" class="bar">
+                    <h3 class="percentLabel"></h3>
+                </div>
+            </div>
+        </div> -->
         <br>
         <br>
         <h2>Long term data</h2>
@@ -151,17 +162,26 @@
     recommendedCarImg.src = "https://cdn.motor1.com/images/mgl/kjLpP/s1/ford-mustang-mach-e-debuts-in-europe.jpg"
 
 
-   
-    
-    
-    MoveCircularProgressBar("bar1", 0.7); //short term cost viability
-    MoveCircularProgressBar("bar2", 0.2); //3 year cost viability
-    
-    //performance comparison
-    //
+
+    function animate(circle, percent, start, end) {
+        circle.animate(percent, {
+            from: {
+                color: start
+            },
+            to: {
+                color: end
+            }
+        });
+    }
+
+    // MoveCircularProgressBar("bar1", .2); //envirnmental impact
+    // MoveCircularProgressBar("bar2", .4); //short term cost viability
+    // MoveCircularProgressBar("bar3", .6); //long term cost viability
+    // MoveCircularProgressBar("bar4", .8); //performance
+
 
     function MoveCircularProgressBar(id, percent) {
-        document.querySelector(`#${id}`).children[0].innerHTML = (percent * 100) + "%"
+        document.querySelector(`#${id}`).children[0].innerHTML = (percent *100)
         var start = '#FC5B3F';
         var end = '#6FD57F';
         var element = document.getElementById(id);
@@ -176,15 +196,8 @@
                 circle.path.setAttribute('stroke', state.color);
             }
         });
+        animate(circle, percent, start, end)
 
-        circle.animate(percent, {
-            from: {
-                color: start
-            },
-            to: {
-                color: end
-            }
-        });
     }
     var ctx = document.getElementById('carbonGraph');
     var lables = [1, 2, 3, 4, 5, 6]

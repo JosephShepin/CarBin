@@ -53,11 +53,7 @@
         var vin = document.querySelector("#vin-input").value
 
         $.ajax({
-            url: '/postData',
-            data: {
-                format: 'json'
-            },
-            dataType: 'json',
+            url: '/postData/'+vin,
             success: function (data) {
                 console.log(data)
             },
