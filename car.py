@@ -1,8 +1,9 @@
 import sys, requests, json, re
+from datetime import date
 
 class Car:
 
-    def __init__(self, id: str, is_electric: bool = False):
+    def __init__(self, id: str, is_electric: bool = False, is_new: bool = False):
         self._is_electric = is_electric
         if (is_electric):
             data = self.get_electric_data(id)
@@ -23,6 +24,12 @@ class Car:
         self._fuel_capacity   = data['fuel_capacity']
         self._city_mileage    = data['city_mileage']
         self._highway_mileage = data['highway_mileage']
+        self._image           = data['image']
+
+        if not is_new:
+                current_year = date.today().year
+                self._price *= self._price * (.86)
+
 
     def get_gas_data(self, vin: str):
         data = self.fetch_carxse(vin)
@@ -66,7 +73,8 @@ class Car:
             'highway_mileage'   : {
                 'number'    : float(data['attributes']['highway_mileage'].split(' ', 1)[0]),
                 'units'     : str(data['attributes']['highway_mileage'].split(' ', 1)[1])
-            }
+            },
+            'image'             : Car.fetch_image(data['attributes']['make'], data['attributes']['model'])
         }
 
     def get_electric_data(self, num: str):
@@ -110,19 +118,56 @@ class Car:
             'highway_mileage'   : {
                 'number'    : float(data['MPGeHighway']),
                 'units'     : 'miles/gallon'
-            }
+            },
+            'image'             : data['Image']
         }
 
     def compare(self, other):
         return {
-            'price'           : self.calculate_percent_change(other._price['number'],self._price['number']),
-            'top_speed'       : self.calculate_percent_change(other._top_speed['number'],self._top_speed['number']),
-            'torque'          : self.calculate_percent_change(other._torque['number'],self._torque['number']),
-            'horsepower'      : self.calculate_percent_change(other._horsepower['number'],self._horsepower['number']),
-            'acceleration'    : self.calculate_percent_change(other._acceleration['number'],self._acceleration['number']),
-            'fuel_capacity'   : self.calculate_percent_change(other._fuel_capacity['number'],self._fuel_capacity['number']),
-            'city_mileage'    : self.calculate_percent_change(other._city_mileage['number'],self._city_mileage['number']),
-            'highway_mileage' : self.calculate_percent_change(other._highway_mileage['number'],self._highway_mileage['number'])
+            'images'           : {
+                'car 1'  : self._image,
+                'car 2'  : self._image
+            },
+            'price'           : {
+                'car 1'  : self._price['number'],
+                'car 2'  : other._price['number'],
+                'change' : self.calculate_percent_change(other._price['number'], self._price['number']),
+            },
+            'top_speed'       : {
+                'car 1'  : self._top_speed['number'],
+                'car 2'  : other._top_speed['number'],
+                'change' : self.calculate_percent_change(other._top_speed['number'], self._top_speed['number']),
+            },
+            'torque'          : {
+                'car 1'  : self._torque['number'],
+                'car 2'  : other._torque['number'],
+                'change' : self.calculate_percent_change(other._torque['number'], self._torque['number']),
+            },
+            'horsepower'      : {
+                'car 1'  : self._horsepower['number'],
+                'car 2'  : other._horsepower['number'],
+                'change' : self.calculate_percent_change(other._horsepower['number'], self._horsepower['number']),
+            },
+            'acceleration'    : {
+                'car 1'  : self._acceleration['number'],
+                'car 2'  : other._acceleration['number'],
+                'change' : self.calculate_percent_change(other._acceleration['number'], self._acceleration['number']),
+            },
+            'fuel_capacity'   : {
+                'car 1'  : self._fuel_capacity['number'],
+                'car 2'  : other._fuel_capacity['number'],
+                'change' : self.calculate_percent_change(other._fuel_capacity['number'], self._fuel_capacity['number']),
+            },
+            'city_mileage'    : {
+                'car 1'  : self._city_mileage['number'],
+                'car 2'  : other._city_mileage['number'],
+                'change' : self.calculate_percent_change(other._city_mileage['number'], self._city_mileage['number']),
+            },
+            'highway_mileage' : {
+                'car 1'  : self._highway_mileage['number'],
+                'car 2'  : other._highway_mileage['number'],
+                'change' : self.calculate_percent_change(other._highway_mileage['number'], self._highway_mileage['number']),
+            }
         }
 
     @staticmethod
@@ -143,7 +188,7 @@ class Car:
         return {}
 
     @staticmethod
-    def fetch_image(make: str, model:str):
+    def fetch_image(make: str, model: str):
         url = f"http://api.carsxe.com/images?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&make={make}&model={model}"
         r = requests.get(url)
         return json.loads(r.text)["images"][0]["link"]
