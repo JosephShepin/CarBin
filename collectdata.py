@@ -61,19 +61,19 @@ def fetch_carxse(vin: str):
     r = requests.get(url)#, headers=headers)
     return json.loads(r.text)
 
-def fetch_carqueryapi(make: str, model: str, year: str):
+def fetch_carqueryapi(make: str, model: str, year: str, trim: str):
     #url = 'https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getTrims&make=' + make + '&model=' + model + '&year=' + year
-    url = F'https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getTrims&make={make}&model={model}&year={year}'
+    url = F'https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getTrims&make={make}&year={year}'
     headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
     r = requests.get(url, headers=headers)
     for entry in json.loads(r.text[2:-2])['Trims']:
-        if fuzzy_string_math(entry['model_name'] + ' ' + entry['model_trim'],model):
+        if fuzzy_string_match(entry['model_name'] + ' ' + entry['model_trim'], model + trim):
             return entry
     return {}
 
 def get_image_url(make: str, model:str):
     # url = "https://storage.googleapis.com/car-switch/image_response.json"
-    url = "http://api.carsxe.com/images?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&make=%s&model=%s" % (make,model)
+    url = f"http://api.carsxe.com/images?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&make={make}&model={model}"
     print(url)
     r = requests.get(url)
     data = json.loads(r.text)
@@ -86,8 +86,8 @@ def create_car(carxse_data: dict, carqueryapi_data: dict):
 
 
 if __name__ == '__main__':
-    json_str = fetch_carxse('JTJZK1BA1D2009651')
-    car = Car(json_str)
+    json_dict = fetch_carxse('JTJZK1BA1D2009651')
+    car = Car(json_dict)
     print(car)
-    a = fetch_carqueryapi(car.make, car.model, car.year)
+    a = fetch_carqueryapi(car.make, car.model, car.year, car.trim)
     print(a)
