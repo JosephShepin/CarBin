@@ -32,44 +32,84 @@
 </head>
 
 <style>
-    .bar{
+    .bar {
         margin-top: -40px !important;
-        padding-bottom: 50px ;
+        padding-bottom: 50px;
         margin: 20px;
         width: 130px;
         height: 150px;
     }
-
 
     .percentLabel {
         position: relative;
         top: 85px;
         right: -6px
     }
-    .miniCard{
+
+    .miniCard {
         padding: 0;
         margin-bottom: 20px;
     }
-    .space{
+
+    .space {
         margin-right: 10px;
     }
-</style>
 
+    .barBottomLabel {
+        font-size: 20px;
+        margin-bottom: -8px;
+        padding-top: 12px !important;
+    }
+
+    .car-img {
+
+        width: 400px;
+        border-radius: 5px;
+    }
+</style>
 <body>
     <div class="container" style="text-align: center; padding-top: 30px;">
-        <div style="display: flex;">
-            <div class='shadow-sm p-3 bg-white rounded miniCard space' >
+        <h1>Results</h1>
+        <hr>
+        <br>
+        <div class="" style="display:flex; justify-content:flex-start;">
+            <div style="flex:1; margin-right: 10px;" class="shadow-sm p-3 bg-white rounded"
+                style=" padding: 10px !important; padding-bottom: 40px !important;">
+                <div style='text-align: left'>Your Car</div>
+                <h3 style='text-align: left'>Lexus RX-350</h3>
+                <hr>
+                <img class="car-img"
+                    src="https://cdn.motor1.com/images/mgl/kjLpP/s1/ford-mustang-mach-e-debuts-in-europe.jpg"></img>
+            </div>
+            <div style="flex:1; margin-left: 10px; " class="shadow-sm p-3 bg-white rounded"
+                style="padding: 10px !important; padding-bottom: 40px !important;">
+            </div>
+        </div>
+        <br>
+        <br>
+        <h2>Overview</h2>
+        <hr>
+        <div style="display: flex; justify-content:center;">
+            <div class='shadow-sm p-3 bg-white rounded miniCard space'>
+                <p class="barTopLabel">Cost Effectiveness</p>
                 <div id="bar1" class="bar">
                     <h3 class="percentLabel"></h3>
                 </div>
+                <p class="barBottomLabel">Viable</p>
             </div>
-            <div class='shadow-sm p-3 bg-white rounded miniCard'>
+            <div class='shadow-sm p-3 bg-white rounded miniCard space'>
+                <p class="barTopLabel">Performance</p>
                 <div id="bar2" class="bar">
                     <h3 class="percentLabel"></h3>
                 </div>
+                <p class="barBottomLabel">Comparable</p>
             </div>
         </div>
-        <div class="graphs" style="display:flex;">  
+        <br>
+        <br>
+        <h2>Long term data</h2>
+        <hr>
+        <div class="graphs" style="display:flex;">
             <div class="shadow-sm p-3 bg-white rounded"
                 style="margin-right: 10px; padding: 10px !important; padding-bottom: 40px !important;">
                 <div style="height: 300px !important; width:500px !important; ">
@@ -77,7 +117,6 @@
                     <canvas id="carbonGraph" width="200" height="200"></canvas>
                 </div>
             </div>
-    
             <div class="shadow-sm p-3 bg-white rounded"
                 style="margin-left: 10px; padding: 10px !important; padding-bottom: 40px !important;">
                 <div style="height: 300px !important; width:500px !important;">
@@ -86,15 +125,22 @@
                 </div>
             </div>
         </div>
+        <br>
+        <br>
+        <h2>Detailed Spec Comparison</h2>
+        <hr>
     </div>
+    <br>
+    <br>
+    <br>
+    <br>
 </body>
-
 <script>
     MoveCircularProgressBar("bar1", 0.7);
     MoveCircularProgressBar("bar2", 0.2);
 
     function MoveCircularProgressBar(id, percent) {
-        document.querySelector(`#${id}`).children[0].innerHTML = (percent*100) + "%"
+        document.querySelector(`#${id}`).children[0].innerHTML = (percent * 100) + "%"
         var start = '#FC5B3F';
         var end = '#6FD57F';
         var element = document.getElementById(id);
