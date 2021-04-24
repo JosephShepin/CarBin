@@ -56,6 +56,7 @@ def fetch_carxse(vin: str):
     return json.loads(r.text)
 
 def fetch_carqueryapi(make: str, model: str, year: str):
+<<<<<<< HEAD
     url = F'https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getTrims&make={make}&model={model}&year={year}'
     #url = 'https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getTrims&make=Lexus&year=2006'
     headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
@@ -68,6 +69,31 @@ if __name__ == '__main__':
     print(car)
     a = fetch_carqueryapi(car.make, car.model + car.trim, car.year)
     print(a)
+=======
+    #url = 'https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getTrims&make=' + make + '&model=' + model + '&year=' + year
+    url = 'https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getTrims&make=' + make + '&year=' + year
+    headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
+    r = requests.get(url, headers=headers)
+    for entry in json.loads(r.text[2:-2])['Trims']:
+        if entry['model_name'] + ' ' + entry['model_trim'] == model:
+            return entry
+    return null
+
+
+def getImageURL(make: str, model:str):
+    # url = "https://storage.googleapis.com/car-switch/image_response.json"
+    url = "http://api.carsxe.com/images?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&make=%s&model=%s" % (make,model)
+    print(url)
+    r = requests.get(url)
+    data = json.loads(r.text)
+    return data["images"][0]["link"]
+
+# getImageURL("chevy","bolt")
+
+
+if __name__ == '__main__':
+    fetch_carqueryapi('Lexus','ES330','2005')
+>>>>>>> 046d49a425b8871b2e40ee50c301d0b8840f1c32
     """
     json_str = fetch_carxse('JTJZK1BA1D2009651')
     car = Car(json_str)
