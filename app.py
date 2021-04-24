@@ -15,8 +15,9 @@ def main():
 def results():
     return render_template('results.html')
 
-@app.route('/postData', methods=["POST","GET"])
-def postData():
+@app.route('/postData/<vin>', methods=["POST","GET"])
+def postData(vin):
+    print("the received vin is " + vin)
     return {"h":"i"}
 
 
