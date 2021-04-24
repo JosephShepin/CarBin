@@ -15,7 +15,8 @@ def results():
 
 @app.route('/postData', methods=["POST","GET"])
 def postData():
-    vin = request.form['vin']
+    vin = request.form.get('vin', "")
+
     print("the received vin is 234 " + vin)
     return {"h":"i"}
 
