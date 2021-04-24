@@ -9,44 +9,81 @@ def fuzzy_string_match(str1: str, str2: str):
 
 class Car:
 
-    def __init__(self, vin: str):
+    def __init__(self, vin: str = '', is_electric: bool = False):
+
+        self._is_electric = is_electric
+
+        if (is_electric):
+            data = self.get_electric_data(vin)
+        else:
+            data = self.get_gas_data(vin)
+
+        self._make            = data['make']
+        self._model           = data['model']
+        self._year            = data['year']
+        self._trim            = data['trim']
+        self._style           = data['style']
+        self._type            = data['type']
+        self._fuel_type       = data['fuel_type']
+        self._price           = data['price']
+        self._top_speed       = data['top_speed']
+        self._torque          = data['torque']
+        self._horsepower      = data['horsepower']
+        self._acceleration    = data['acceleration']
+        self._fuel_capacity   = data['fuel_capacity']
+        self._city_mileage    = data['city_mileage']
+        self._highway_mileage = data['highway_mileage']
+
+
+    def get_gas_data(self, vin: str):
+
         data = self.fetch_carxse(vin)
         data.update(self.fetch_carqueryapi(data['attributes']['make'], data['attributes']['model'], data['attributes']['year'], data['attributes']['trim']))
 
-        self.make            = data['attributes']['make']
-        self.model           = data['attributes']['model']
-        self.year            = data['attributes']['year']
-        self.trim            = data['attributes']['trim']
-        self.style           = data['attributes']['style']
-        self.type            = data['attributes']['type']
-        self.fuel_type       = data['attributes']['fuel_type']
-
-        self.horsepower      = data['attributes']['make']
-        self.torque          = data['attributes']['make']
-        self.acceleration    = data['attributes']['make']
-
-        fuel_capacity_raw    = data['attributes']['fuel_capacity']
-        self.fuel_capacity   = {
-            'capacity' : float(fuel_capacity_raw[0]),
-            'units'    : str(fuel_capacity_raw[1])
+        return {
+            'make'              : data['attributes']['make'],
+            'model'             : data['attributes']['model'],
+            'year'              : data['attributes']['year'],
+            'trim'              : data['attributes']['trim'],
+            'style'             : data['attributes']['style'],
+            'type'              : data['model_body'],
+            'fuel_type'         : data['attributes']['fuel_type'],
+            'price'             : {
+                'number'    : float(data['attributes']['manufacturer_suggested_retail_price'].split(' ', 1)[0][1:].replace(',', '')),
+                'units'     : str(data['attributes']['manufacturer_suggested_retail_price'].split(' ', 1)[1])
+            },
+            'top_speed'         : {
+                'number'    : float(data['model_top_speed_kph']),
+                'units'     : 'kilometers/hour'
+            },
+            'torque'            : {
+                'number'    : float(data['model_engine_torque_nm']),
+                'units'     : 'newtonmeters'
+            },
+            'horsepower'        : {
+                'number'    : float(data['model_engine_power_ps']),
+                'units'     : 'horsepower'
+            },
+            'acceleration'      : {
+                'number'    : float(data['model_0_to_100_kph']),
+                'units'     : '100 km/h/s'
+            },
+            'fuel_capacity'     : {
+                'number'    : float(data['attributes']['fuel_capacity'].split(' ', 1)[0]),
+                'units'     : str(data['attributes']['fuel_capacity'].split(' ', 1)[1])
+            },
+            'city_mileage'      : {
+                'number'    : float(data['attributes']['city_mileage'].split(' ', 1)[0]),
+                'units'     : str(data['attributes']['city_mileage'].split(' ', 1)[1])
+            },
+            'highway_mileage'   : {
+                'number'    : float(data['attributes']['highway_mileage'].split(' ', 1)[0]),
+                'units'     : str(data['attributes']['highway_mileage'].split(' ', 1)[1])
+            }
         }
-        city_mileage_raw     = data['attributes']['city_mileage'].split(' ', 1)
-        self.city_mileage    = {
-            'mileage' : float(city_mileage_raw[0]),
-            'units'   : str(city_mileage_raw[1])
-        }
-        highway_mileage_raw  = data['attributes']['highway_mileage'].split(' ', 1)
-        self.highway_mileage = {
-            'mileage' : float(highway_mileage_raw[0]),
-            'units'   : str(highway_mileage_raw[1])
-        }
-        self.mpg           = {
-            'mpg' : data['attributes']['make'],
-            'electric' : False
-        }
 
-        self.raw_data = data
-
+    def get_electric_data(self, num: str):
+        pass
 
     @staticmethod
     def fetch_carxse(vin: str):
@@ -57,7 +94,7 @@ class Car:
 
     @staticmethod
     def fetch_carqueryapi(make: str, model: str, year: str, trim: str):
-        url = F'https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getTrims&make={make}&year={year}'
+        url = f'https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getTrims&make={make}&year={year}'
         headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
         r = requests.get(url, headers=headers)
         for entry in json.loads(r.text[2:-2])['Trims']:
@@ -73,22 +110,27 @@ class Car:
         data = json.loads(r.text)
         return data["images"][0]["link"]
 
-    def get_raw_data(self):
-        return self.raw_data
-
     def __str__(self):
-         return F'''
-Make: {self.make}
-Model: {self.model}
-Year: {self.year}
-Trim: {self.trim}
-Style: {self.style}
-Type: {self.type}
-Fuel Capacity: {self.fuel_capacity['capacity']}
-City Mileage: {self.city_mileage['mileage']}
-Highway Mileage: {self.highway_mileage['mileage']}
+         return f'''
+Make: {self._make}
+Model: {self._model}
+Year: {self._year}
+Trim: {self._trim}
+Style: {self._style}
+Type: {self._type}
+Fuel Type: {self._fuel_type}
+Electric: {self._is_electric}
+Price: {self._price['number']} ({self._price['units']})
+Top Speed: {self._top_speed['number']} ({self._top_speed['units']})
+Torque: {self._torque['number']} ({self._torque['units']})
+Horsepower: {self._horsepower['number']} ({self._horsepower['units']})
+Acceleration: {self._acceleration['number']} ({self._acceleration['units']})
+Fuel Capacity: {self._fuel_capacity['number']} ({self._fuel_capacity['units']})
+City Mileage: {self._city_mileage['number']} ({self._city_mileage['units']})
+Highway Mileage: {self._highway_mileage['number']} ({self._highway_mileage['units']})
+
 '''
 
 if __name__ == '__main__':
     car = Car('JTJZK1BA1D2009651')
-    print(json.dumps(car.get_raw_data(), indent=2))
+    print(car)
