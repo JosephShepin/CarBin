@@ -72,8 +72,8 @@ def fetch_carqueryapi(make: str, model: str, year: str):
 
 
 def getImageURL(make: str, model:str):
-    # url = "https://storage.googleapis.com/car-switch/image_response.json"
-    url = "http://api.carsxe.com/images?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&make=%s&model=%s" % (make,model)
+    url = "https://storage.googleapis.com/car-switch/image_response.json"
+    # url = "http://api.carsxe.com/images?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&make=%s&model=%s" % (make,model)
     print(url)
     r = requests.get(url)
     data = json.loads(r.text)
