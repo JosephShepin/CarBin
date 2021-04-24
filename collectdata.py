@@ -67,11 +67,11 @@ def fetch_carqueryapi(make: str, model: str, year: str, trim: str):
     headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
     r = requests.get(url, headers=headers)
     for entry in json.loads(r.text[2:-2])['Trims']:
-        if fuzzy_string_match(entry['model_name'] + ' ' + entry['model_trim'], model + trim):
+        if fuzzy_string_match(entry['model_name'] + entry['model_trim'], model + trim):
             return entry
     return {}
 
-def get_image_url(make: str, model:str):
+def fetch_image(make: str, model:str):
     # url = "https://storage.googleapis.com/car-switch/image_response.json"
     url = f"http://api.carsxe.com/images?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&make={make}&model={model}"
     print(url)
