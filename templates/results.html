@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,38 +24,147 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
 
+
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/0.6.1/progressbar.min.js"
+        integrity="sha512-7IoDEsIJGxz/gNyJY/0LRtS45wDSvPFXGPuC7Fo4YueWMNOmWKMAllEqo2Im3pgOjeEwsOoieyliRgdkZnY0ow=="
+        crossorigin="anonymous"></script>
 </head>
 
+<style>
+    .bar{
+        margin-top: -40px !important;
+        padding-bottom: 50px ;
+        margin: 20px;
+        width: 130px;
+        height: 150px;
+    }
+
+
+    .percentLabel {
+        position: relative;
+        top: 85px;
+        right: -6px
+    }
+    .miniCard{
+        padding: 0;
+        margin-bottom: 20px;
+    }
+    .space{
+        margin-right: 10px;
+    }
+</style>
+
 <body>
-    <div class="container">
-        <br>
-        <div class="shadow-sm p-3 mb-5 bg-white rounded">
-            <h3>Enter Your Car's Vin Number</h3>
-            <br>
-            <div style="display:flex;">
-                <input class="form-control" id="vin-input" value="JTJZK1BA1D2009651" placeholder="Car's Vin Number" />
-                <div style="width:100px; margin-left: 8px;" onClick="getData()" class="btn btn-success">Go</div>
+    <div class="container" style="text-align: center; padding-top: 30px;">
+        <div style="display: flex;">
+            <div class='shadow-sm p-3 bg-white rounded miniCard space' >
+                <div id="bar1" class="bar">
+                    <h3 class="percentLabel"></h3>
+                </div>
+            </div>
+            <div class='shadow-sm p-3 bg-white rounded miniCard'>
+                <div id="bar2" class="bar">
+                    <h3 class="percentLabel"></h3>
+                </div>
+            </div>
+        </div>
+        <div class="graphs" style="display:flex;">  
+            <div class="shadow-sm p-3 bg-white rounded"
+                style="margin-right: 10px; padding: 10px !important; padding-bottom: 40px !important;">
+                <div style="height: 300px !important; width:500px !important; ">
+                    <h5>Carbon Footprint over time</h5>
+                    <canvas id="carbonGraph" width="200" height="200"></canvas>
+                </div>
+            </div>
+    
+            <div class="shadow-sm p-3 bg-white rounded"
+                style="margin-left: 10px; padding: 10px !important; padding-bottom: 40px !important;">
+                <div style="height: 300px !important; width:500px !important;">
+                    <h5>Cost over time</h5>
+                    <canvas id="costGraph" width="200" height="200"></canvas>
+                </div>
             </div>
         </div>
     </div>
 </body>
 
 <script>
-    function getData() {
-        var vin = document.querySelector("#vin-input").value
+    MoveCircularProgressBar("bar1", 0.7);
+    MoveCircularProgressBar("bar2", 0.2);
 
-        $.ajax({
-            url: '/postData',
-            data: {
-                format: 'json'
+    function MoveCircularProgressBar(id, percent) {
+        document.querySelector(`#${id}`).children[0].innerHTML = (percent*100) + "%"
+        var start = '#FC5B3F';
+        var end = '#6FD57F';
+        var element = document.getElementById(id);
+        var circle = new ProgressBar.Circle(element, {
+            color: start,
+            trailColor: '#eee',
+            trailWidth: 5,
+            duration: 1000,
+            easing: 'easeInOut',
+            strokeWidth: 5,
+            step: function (state, circle) {
+                circle.path.setAttribute('stroke', state.color);
+            }
+        });
+
+        circle.animate(percent, {
+            from: {
+                color: start
             },
-            dataType: 'json',
-            success: function (data) {
-                console.log(data)
-            },
-            type: 'GET'
+            to: {
+                color: end
+            }
         });
     }
+    var ctx = document.getElementById('carbonGraph');
+    var lables = [1, 2, 3, 4, 5, 6]
+    var carbonGraph = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: lables,
+            datasets: [{
+                label: 'Electric',
+                data: [200, 210, 220, 230, 240, 250],
+                borderColor: "red",
+                borderWidth: 1
+            }, {
+                labels: lables,
+                label: 'Gas',
+                data: [100, 130, 160, 190, 210, 230],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true
+        }
+    });
+    var ctx = document.getElementById('costGraph');
+    var lables = [1, 2, 3, 4, 5, 6]
+    var carbonGraph = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: lables,
+            datasets: [{
+                label: 'Electric',
+                data: [200, 210, 220, 230, 240, 250],
+                borderColor: "red",
+                borderWidth: 1
+            }, {
+                labels: lables,
+                label: 'Gas',
+                data: [100, 130, 160, 190, 210, 230],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true
+        }
+    });
 </script>
+
 </html>
