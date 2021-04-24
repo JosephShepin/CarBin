@@ -26,9 +26,8 @@ class Car:
         self._highway_mileage = data['highway_mileage']
         self._image           = data['image']
 
-        #if not is_new:
-        #        current_year = date.today().year
-        #        self._price *= self._price * (.86)
+        if not is_new:
+                self._price['number'] *= self._price['number'] * .86 ** (date.today().year - self._year)
 
 
     def get_gas_data(self, vin: str):
@@ -37,7 +36,7 @@ class Car:
         return {
             'make'              : data['attributes']['make'],
             'model'             : data['attributes']['model'],
-            'year'              : data['attributes']['year'],
+            'year'              : int(data['attributes']['year']),
             'trim'              : data['attributes']['trim'],
             'style'             : data['attributes']['style'],
             'type'              : data['model_body'],
@@ -81,8 +80,8 @@ class Car:
         data = json.loads(open('electric-cars.json','r').read())['Electric Cars'][num]
         return {
             'make'              : data['Make'],
-            'model'             : data['Name'],
-            'year'              : data['Year'],
+            'model'             : data['Model'],
+            'year'              : int(data['Year']),
             'trim'              : data['Trim'],
             'style'             : 'ELECTRIC',
             'type'              : data['Type'],
@@ -92,23 +91,23 @@ class Car:
                 'units'     : 'USD'
             },
             'top_speed'         : {
-                'number'    : 0.0,#float(data['Top Speed']),
+                'number'    : float(data['Top Speed']),
                 'units'     : 'kilometers/hour'
             },
             'torque'            : {
-                'number'    : 0.0,#float(data['Torque']),
+                'number'    : float(data['Mean Torque']),
                 'units'     : 'newtonmeters'
             },
             'horsepower'        : {
-                'number'    : 0.0,#float(data['Horsepower']),
+                'number'    : float(data['Mean Horsepower']),
                 'units'     : 'horsepower'
             },
             'acceleration'      : {
-                'number'    : float(data['Acceleration']),
+                'number'    : float(data['Avg Acceleration']),
                 'units'     : '60 miles/h/s'
             },
             'fuel_capacity'     : {
-                'number'    : 0.0,#float(data['Fuel Capacity']),
+                'number'    : float(data['Mean Range']),
                 'units'     : ''
             },
             'city_mileage'      : {
