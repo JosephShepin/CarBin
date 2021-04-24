@@ -33,15 +33,18 @@
             <h3>Enter Your Car's Vin Number</h3>
             <br>
             <div style="display:flex;">
-                <input class="form-control" id="vin-input" value="JTJZK1BA1D2009651" placeholder="Car's Vin Number" />
-                <div style="width:100px; margin-left: 8px;" onClick="getData()" class="btn btn-success">Go</div>
+                <form method="POST" action="/postData">
+                <input required name="vin"  class="form-control" id="vin-input" value="JTJZK1BA1D2009651" placeholder="Car's Vin Number" />
+                <input style="width:100px; margin-left: 8px;"  type="submit" class="btn btn-success"></input>
+            </form>
+
             </div>
             <br>
-            <h3>Or Upload Barcode</h3>
-            <form method="post" action="/upload" enctype="multipart/form-data">
+            <!-- <h3>Or Upload Barcode</h3> -->
+            <!-- <form method="post" action="/upload" enctype="multipart/form-data">
               <input type="file" name="file1">
               <input type="submit">
-            </form>
+            </form> -->
     
         </div>
         
