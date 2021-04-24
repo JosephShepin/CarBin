@@ -61,14 +61,17 @@ def fetch_carxse(vin: str):
     return r.text
 
 def fetch_carqueryapi(make: str, model: str, year: str):
-    url = 'https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getTrims&make=' + make + '&model=' + model + '&year=' + year
+    #url = 'https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getTrims&make=' + make + '&model=' + model + '&year=' + year
+    url = 'https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getTrims&make=' + make + '&year=' + year
     headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
     r = requests.get(url, headers=headers)
-    #for entry in json.loads(r.text):
-    #    print(entry)
+    for entry in json.loads(r.text[2:-2])['Trims']:
+        if entry['model_name'] + ' ' + entry['model_trim'] == model:
+            return entry
+    return null
 
 if __name__ == '__main__':
-    fetch_carqueryapi('Lexus','ES330','2006')
+    fetch_carqueryapi('Lexus','ES330','2005')
     """
     json_str = fetch_carxse('JTJZK1BA1D2009651')
     car = Car(json_str)
