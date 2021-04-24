@@ -84,15 +84,15 @@ class Car:
                 'units'     : 'USD'
             },
             'top_speed'         : {
-                'number'    : float(data['Top Speed']),
+                'number'    : 0.0,#float(data['Top Speed']),
                 'units'     : 'kilometers/hour'
             },
             'torque'            : {
-                'number'    : float(data['Torque']),
+                'number'    : 0.0,#float(data['Torque']),
                 'units'     : 'newtonmeters'
             },
             'horsepower'        : {
-                'number'    : float(data['Horsepower']),
+                'number'    : 0.0,#float(data['Horsepower']),
                 'units'     : 'horsepower'
             },
             'acceleration'      : {
@@ -100,7 +100,7 @@ class Car:
                 'units'     : '60 miles/h/s'
             },
             'fuel_capacity'     : {
-                'number'    : float(data['Fuel Capacity']),
+                'number'    : 0.0,#float(data['Fuel Capacity']),
                 'units'     : ''
             },
             'city_mileage'      : {

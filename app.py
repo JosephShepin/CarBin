@@ -1,8 +1,6 @@
-
-
 from flask import Flask,render_template, jsonify, make_response, request
-import os
-#from pyzbar import pyzbar
+import os, Car
+from pyzbar import pyzbar
 from PIL import Image
 
 app = Flask(__name__)
@@ -38,4 +36,4 @@ def upload_file():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
-    
+
