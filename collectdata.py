@@ -2,8 +2,7 @@ import requests, json
 
 class Car:
 
-    def __init__(self, json_str: str):
-        data = json.loads(json_str)
+    def __init__(self, data: dict):
         self.make            = data['attributes']['make']
         self.model           = data['attributes']['model']
         self.year            = data['attributes']['year']
@@ -36,10 +35,6 @@ class Car:
             'electric' : False
         }
 
-    @staticmethod
-    def parse_json(json_str: str):
-        pass
-
     def __str__(self):
          return F'''
 Make: {self.make}
@@ -56,19 +51,23 @@ Highway Mileage: {self.highway_mileage['mileage']}
 
 def fetch_carxse(vin: str):
     url = 'https://storage.googleapis.com/car-switch/respoonse.json'
-    #url =  'https://api.carsxe.com/specs?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&vin=' + vin
+    #url =  F'https://api.carsxe.com/specs?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&vin={vin}
     r = requests.get(url)#, headers=headers)
-    return r.text
+    return json.loads(r.text)
 
 def fetch_carqueryapi(make: str, model: str, year: str):
-    url = 'https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getTrims&make=' + make + '&model=' + model + '&year=' + year
+    url = F'https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getTrims&make={make}&model={model}&year={year}'
+    #url = 'https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getTrims&make=Lexus&year=2006'
     headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
     r = requests.get(url, headers=headers)
-    #for entry in json.loads(r.text):
-    #    print(entry)
+    return json.loads(r.text[2:-2])
 
 if __name__ == '__main__':
-    fetch_carqueryapi('Lexus','ES330','2006')
+    json_str = fetch_carxse('JTJZK1BA1D2009651')
+    car = Car(json_str)
+    print(car)
+    a = fetch_carqueryapi(car.make, car.model + car.trim, car.year)
+    print(a)
     """
     json_str = fetch_carxse('JTJZK1BA1D2009651')
     car = Car(json_str)
