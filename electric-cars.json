@@ -1,8 +1,12 @@
 {
+  "Electric Cars": {
     "0": {
+      "Make": "Ford",
       "Name": "Ford Mach E",
+      "Trim": "RWD",
       "MSRP": 42895,
-      "MPGe (City, Hwy)": 96,
+      "MPGeCity": 96,
+      "MPGeHighway": 84,
       "Acceleration": 4.1,
       "Type": "SUV",
       "Horsepower": "266-346",
@@ -12,9 +16,12 @@
       "Image": "https://cdn.motor1.com/images/mgl/kjLpP/s1/ford-mustang-mach-e-debuts-in-europe.jpg"
     },
     "1": {
+      "Make": "Volvo",
       "Name": "Volvo XC40 Recharge",
+      "Trim": "AWD",
       "MSRP": 53990,
-      "MPGe (City, Hwy)": 85,
+      "MPGeCity": 85,
+      "MPGeHighway": 72,
       "Acceleration": 4.7,
       "Type": "SUV",
       "Horsepower": 402,
@@ -24,9 +31,12 @@
       "Image": "https://d3lp4xedbqa8a5.cloudfront.net/s3/digital-cougar-assets/whichcar/2020/07/08/-1/volvo-xc40-2.jpg"
     },
     "2": {
+      "Make": "Kia",
       "Name": "Kia Niro EV",
+      "Trim": "FWD",
       "MSRP": 39090,
-      "MPGe (City, Hwy)": 53,
+      "MPGeCity": 53,
+      "MPGeHighway": 48,
       "Acceleration": 6.5,
       "Type": "Compact",
       "Horsepower": 201,
@@ -36,9 +46,12 @@
       "Image": "https://www.carscoops.com/wp-content/uploads/2019/02/aec42197-2019-kia-niro-ev.jpg"
     },
     "3": {
+      "Make": "Audi",
       "Name": "Audi E-Tron Sportback",
+      "Trim": "AWD",
       "MSRP": 65900,
-      "MPGe (City, Hwy)": 78,
+      "MPGeCity": 78,
+      "MPGeHighway": 77,
       "Acceleration": 5.5,
       "Type": "SUV",
       "Horsepower": 402,
@@ -48,9 +61,12 @@
       "Image": "https://www.carscoops.com/wp-content/uploads/2019/11/2020-Audi-E-Tron-Sportback.jpg"
     },
     "4": {
+      "Make": "Tesla",
       "Name": "Tesla Model Y",
+      "Trim": "RWD, AWD",
       "MSRP": 39990,
-      "MPGe (City, Hwy)": 140,
+      "MPGeCity": 140,
+      "MPGeHighway": 119,
       "Acceleration": "4.2-4.8",
       "Type": "CUV",
       "Horsepower": 384,
@@ -60,9 +76,12 @@
       "Image": "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/2021-tesla-model-y-mmp-1-1604701558.jpg?crop=0.840xw:0.894xh;0.0737xw,0.0515xh&resize=1200:*"
     },
     "5": {
+      "Make": "Chevrolet",
       "Name": "Chevrolet Bolt EV",
+      "Trim": null,
       "MSRP": 36500,
-      "MPGe (City, Hwy)": 127,
+      "MPGeCity": 127,
+      "MPGeHighway": 108,
       "Acceleration": 6.5,
       "Type": "Compact",
       "Horsepower": 200,
@@ -72,9 +91,12 @@
       "Image": "https://www.chevrolet.com/bypass/iframes/gm/chevrolet/2021/Bolt-EV/colorizer/images/colorizer/ext/2021-bolt-colorizer-2lz-g7q-01.jpg"
     },
     "6": {
+      "Make": "Hyundai",
       "Name": "Hyundai Kona Electric",
+      "Trim": null,
       "MSRP": 37390,
-      "MPGe (City, Hwy)": 132,
+      "MPGeCity": 132,
+      "MPGeHighway": 108,
       "Acceleration": 6.4,
       "Type": "Subcompact SUV",
       "Horsepower": 201,
@@ -84,9 +106,12 @@
       "Image": "https://media.ed.edmunds-media.com/hyundai/kona-electric/2019/oem/2019_hyundai_kona-electric_4dr-suv_ultimate_fq_oem_1_1600.jpg"
     },
     "7": {
+      "Make": "Tesla",
       "Name": "Tesla Model 3",
+      "Trim": "RWD, AWD",
       "MSRP": 38490,
-      "MPGe (City, Hwy)": 150,
+      "MPGeCity": 150,
+      "MPGeHighway": 133,
       "Acceleration": 3.1,
       "Type": "Sedan",
       "Horsepower": 480,
@@ -96,9 +121,12 @@
       "Image": "https://tesla-cdn.thron.com/delivery/public/image/tesla/c82315a6-ac99-464a-a753-c26bc0fb647d/bvlatuR/std/1200x628/lhd-model-3-social"
     },
     "8": {
+      "Make": "Tesla",
       "Name": "Tesla Model S",
+      "Trim": "RWD, AWD",
       "MSRP": 69420,
-      "MPGe (City, Hwy)": 121,
+      "MPGeCity": 121,
+      "MPGeHighway": 112,
       "Acceleration": "2-3.1",
       "Type": "Sedan",
       "Horsepower": "670-1020",
@@ -108,9 +136,12 @@
       "Image": "https://media.evo.co.uk/image/private/s--vp0QGPIB--/v1611850044/evo/2021/01/2021%20Tesla%20Model%20S%20facelift-17.jpg"
     },
     "9": {
+      "Make": "Tesla",
       "Name": "Tesla Model X",
+      "Trim": "AWD",
       "MSRP": 79990,
-      "MPGe (City, Hwy)": 109,
+      "MPGeCity": 109,
+      "MPGeHighway": 101,
       "Acceleration": "2.7-4.4",
       "Type": "SUV",
       "Horsepower": "670-1020",
@@ -120,9 +151,12 @@
       "Image": "https://cdcssl.ibsrv.net/autodata/images/?IMG=USC60TSS011C021001.JPG&WIDTH=736"
     },
     "10": {
+      "Make": "Volkswagen",
       "Name": "Volkswagen ID.4",
+      "Trim": "RWD",
       "MSRP": 39995,
-      "MPGe (City, Hwy)": 104,
+      "MPGeCity": 104,
+      "MPGeHighway": 89,
       "Acceleration": 7.6,
       "Type": "Compact SUV",
       "Horsepower": "201-302",
@@ -132,9 +166,12 @@
       "Image": "https://www.automobilemag.com/uploads/sites/11/2020/09/2021-Volkswagen-ID4-47.jpg"
     },
     "11": {
+      "Make": "Hyundai",
       "Name": "Hyundai Ioniq Electric",
+      "Trim": "FWD",
       "MSRP": 23400,
-      "MPGe (City, Hwy)": 58,
+      "MPGeCity": 58,
+      "MPGeHighway": 60,
       "Acceleration": 9.9,
       "Type": "Mid-Size",
       "Horsepower": 139,
@@ -144,9 +181,12 @@
       "Image": "https://www.motorbiscuit.com/wp-content/uploads/2020/11/2021-Hyundai-Ioniq-EV-1024x683.jpg"
     },
     "12": {
+      "Make": "Nissan",
       "Name": "Nissan Leaf",
+      "Trim": "FWD",
       "MSRP": 31670,
-      "MPGe (City, Hwy)": 123,
+      "MPGeCity": 123,
+      "MPGeHighway": 99,
       "Acceleration": 7.9,
       "Type": "Compact",
       "Horsepower": "147-214",
@@ -156,9 +196,12 @@
       "Image": "https://smartcdn.prod.postmedia.digital/driving/wp-content/uploads/2018/03/2017nic160001_1280_01.png"
     },
     "13": {
+      "Make": "Porshe",
       "Name": "Porshe Taycan 4s",
+      "Trim": "RWD, AWD",
       "MSRP": 103800,
-      "MPGe (City, Hwy)": 79,
+      "MPGeCity": 79,
+      "MPGeHighway": 80,
       "Acceleration": 3.8,
       "Type": "Sedan",
       "Horsepower": 522,
@@ -168,9 +211,12 @@
       "Image": "https://smartcdn.prod.postmedia.digital/driving/wp-content/uploads/2019/12/s19_6481_fine.jpg?quality=100&strip=all"
     },
     "14": {
+      "Make": "Polestar",
       "Name": "Polestar 2",
+      "Trim": null,
       "MSRP": 59900,
-      "MPGe (City, Hwy)": 96,
+      "MPGeCity": 96,
+      "MPGeHighway": 88,
       "Acceleration": 4.45,
       "Type": "Crossover/Sedan",
       "Horsepower": 408,
@@ -180,3 +226,4 @@
       "Image": "https://www.topgear.com/sites/default/files/styles/16x9_1280w/public/cars-car/image/2020/07/polestar2_performance_hde_magnesium_015.jpg?itok=VGkYMp16"
     }
   }
+}
