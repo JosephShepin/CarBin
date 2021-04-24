@@ -1,7 +1,8 @@
 from flask import Flask,render_template, jsonify, make_response, request
-import os, Car
+from car import Car
 from pyzbar import pyzbar
 from PIL import Image
+import os
 
 app = Flask(__name__)
 
@@ -13,13 +14,11 @@ def main():
 def results():
     return render_template('results.html')
 
-@app.route('/postData', methods=["POST","GET"])
+@app.route('/get_car', methods=["GET"])
 def postData():
-    vin = request.form.get('vin', "")
-
-    print("the received vin is 234 " + vin)
-    return {"h":"i"}
-
+    vin = request.args.get('vin', "")
+    car = Car(vin) 
+    return car.__str__()
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
