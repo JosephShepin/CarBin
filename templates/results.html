@@ -151,6 +151,10 @@
     <br>
 </body>
 <script>
+
+    var green = "#28a745"
+    var red = "#dc3545"
+
     var yourCarTitle = document.querySelector(".yourCarTitle")
     var recommendedCarTitle = document.querySelector(".recommendedCarTitle")
     var yourCarImg = document.querySelector(".yourCarImg")
@@ -162,6 +166,19 @@
     recommendedCarImg.src = "https://cdn.motor1.com/images/mgl/kjLpP/s1/ford-mustang-mach-e-debuts-in-europe.jpg"
 
 
+
+    var data = {
+        "price": -37.3,
+        "top_speed": 100.0,
+        "torque": 100.0,
+        "horsepower": 100.0,
+        "acceleration": 42.68,
+        "fuel_capacity": 100.0,
+        "city_mileage": -372.22,
+        "highway_mileage": -188.0
+    }
+    
+    
 
     function animate(circle, percent, start, end) {
         circle.animate(percent, {
@@ -181,7 +198,7 @@
 
 
     function MoveCircularProgressBar(id, percent) {
-        document.querySelector(`#${id}`).children[0].innerHTML = (percent *100)
+        document.querySelector(`#${id}`).children[0].innerHTML = (percent * 100)
         var start = '#FC5B3F';
         var end = '#6FD57F';
         var element = document.getElementById(id);

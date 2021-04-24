@@ -15,9 +15,10 @@ def main():
 def results():
     return render_template('results.html')
 
-@app.route('/postData/<vin>', methods=["POST","GET"])
+@app.route('/postData', methods=["POST","GET"])
 def postData(vin):
-    print("the received vin is " + vin)
+    vin = request.form['vin']
+    print("the received vin is 234 " + vin)
     return {"h":"i"}
 
 
