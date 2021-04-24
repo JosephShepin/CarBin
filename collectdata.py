@@ -1,6 +1,7 @@
 import requests, json, re
 
 not_word_pattern = re.compile('\W')
+
 def fuzzy_string_match(str1: str, str2: str):
     str1 = re.sub(not_word_pattern, '', str1)
     str2 = re.sub(not_word_pattern, '', str2)
@@ -8,7 +9,10 @@ def fuzzy_string_match(str1: str, str2: str):
 
 class Car:
 
-    def __init__(self, data: dict):
+    def __init__(self, vin: str):
+        data = self.fetch_carxse(vin)
+        data.update(self.fetch_carqueryapi(data['attributes']['make'], data['attributes']['model'], data['attributes']['year'], data['attributes']['trim']))
+
         self.make            = data['attributes']['make']
         self.model           = data['attributes']['model']
         self.year            = data['attributes']['year']
@@ -17,9 +21,9 @@ class Car:
         self.type            = data['attributes']['type']
         self.fuel_type       = data['attributes']['fuel_type']
 
-        self.horsepower      = data['attributes']['make'] #NOT AVALIBLE
-        self.torque          = data['attributes']['make'] #NOT AVALIBLE
-        self.acceleration    = data['attributes']['make'] #NOT AVALIBLE
+        self.horsepower      = data['attributes']['make']
+        self.torque          = data['attributes']['make']
+        self.acceleration    = data['attributes']['make']
 
         fuel_capacity_raw    = data['attributes']['fuel_capacity']
         self.fuel_capacity   = {
@@ -41,6 +45,37 @@ class Car:
             'electric' : False
         }
 
+        self.raw_data = data
+
+
+    @staticmethod
+    def fetch_carxse(vin: str):
+        url = 'https://storage.googleapis.com/car-switch/respoonse.json'
+        #url =  F'https://api.carsxe.com/specs?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&vin={vin}
+        r = requests.get(url)
+        return json.loads(r.text)
+
+    @staticmethod
+    def fetch_carqueryapi(make: str, model: str, year: str, trim: str):
+        url = F'https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getTrims&make={make}&year={year}'
+        headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
+        r = requests.get(url, headers=headers)
+        for entry in json.loads(r.text[2:-2])['Trims']:
+            if fuzzy_string_match(entry['model_name'] + entry['model_trim'], model + trim):
+                return entry
+        return {}
+
+    @staticmethod
+    def fetch_image(make: str, model:str):
+        url = f"http://api.carsxe.com/images?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&make={make}&model={model}"
+        print(url)
+        r = requests.get(url)
+        data = json.loads(r.text)
+        return data["images"][0]["link"]
+
+    def get_raw_data(self):
+        return self.raw_data
+
     def __str__(self):
          return F'''
 Make: {self.make}
@@ -54,40 +89,6 @@ City Mileage: {self.city_mileage['mileage']}
 Highway Mileage: {self.highway_mileage['mileage']}
 '''
 
-
-def fetch_carxse(vin: str):
-    url = 'https://storage.googleapis.com/car-switch/respoonse.json'
-    #url =  F'https://api.carsxe.com/specs?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&vin={vin}
-    r = requests.get(url)#, headers=headers)
-    return json.loads(r.text)
-
-def fetch_carqueryapi(make: str, model: str, year: str, trim: str):
-    #url = 'https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getTrims&make=' + make + '&model=' + model + '&year=' + year
-    url = F'https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getTrims&make={make}&year={year}'
-    headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
-    r = requests.get(url, headers=headers)
-    for entry in json.loads(r.text[2:-2])['Trims']:
-        if fuzzy_string_match(entry['model_name'] + entry['model_trim'], model + trim):
-            return entry
-    return {}
-
-def fetch_image(make: str, model:str):
-    # url = "https://storage.googleapis.com/car-switch/image_response.json"
-    url = f"http://api.carsxe.com/images?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&make={make}&model={model}"
-    print(url)
-    r = requests.get(url)
-    data = json.loads(r.text)
-    return data["images"][0]["link"]
-
-def create_car(carxse_data: dict, carqueryapi_data: dict):
-    return Car(carxse_data.update(carqueryapi_data))
-
-# getImageURL("chevy","bolt")
-
-
 if __name__ == '__main__':
-    json_dict = fetch_carxse('JTJZK1BA1D2009651')
-    car = Car(json_dict)
-    print(car)
-    a = fetch_carqueryapi(car.make, car.model, car.year, car.trim)
-    print(a)
+    car = Car('JTJZK1BA1D2009651')
+    print(json.dumps(car.get_raw_data(), indent=2))
