@@ -9,14 +9,14 @@ def fuzzy_string_match(str1: str, str2: str):
 
 class Car:
 
-    def __init__(self, vin: str = '', is_electric: bool = False):
+    def __init__(self, id: str, is_electric: bool = False):
 
         self._is_electric = is_electric
 
         if (is_electric):
-            data = self.get_electric_data(vin)
+            data = self.get_electric_data(id)
         else:
-            data = self.get_gas_data(vin)
+            data = self.get_gas_data(id)
 
         self._make            = data['make']
         self._model           = data['model']
@@ -83,12 +83,55 @@ class Car:
         }
 
     def get_electric_data(self, num: str):
-        pass
+
+        data = json.loads(open('electric-cars.json','r').read())['Electric Cars'][num]
+
+        return {
+            'make'              : data['Make'],
+            'model'             : data['Name'],
+            'year'              : data['Year'],
+            'trim'              : data['Trim'],
+            'style'             : 'ELECTRIC',
+            'type'              : data['Type'],
+            'fuel_type'         : 'ELECTRIC',
+            'price'             : {
+                'number'    : float(data['MSRP']),
+                'units'     : 'USD'
+            },
+            'top_speed'         : {
+                'number'    : 0.0,#float(data['Top Speed']),
+                'units'     : 'kilometers/hour'
+            },
+            'torque'            : {
+                'number'    : 0.0,#float(data['Torque']),
+                'units'     : 'newtonmeters'
+            },
+            'horsepower'        : {
+                'number'    : 0.0,#float(data['Horsepower']),
+                'units'     : 'horsepower'
+            },
+            'acceleration'      : {
+                'number'    : float(data['Acceleration']),
+                'units'     : '60 miles/h/s'
+            },
+            'fuel_capacity'     : {
+                'number'    : 0.0,#float(data['Fuel Capacity']),
+                'units'     : ''
+            },
+            'city_mileage'      : {
+                'number'    : float(data['MPGeCity']),
+                'units'     : 'miles/gallon'
+            },
+            'highway_mileage'   : {
+                'number'    : float(data['MPGeHighway']),
+                'units'     : 'miles/gallon'
+            }
+        }
 
     @staticmethod
     def fetch_carxse(vin: str):
         url = 'https://storage.googleapis.com/car-switch/respoonse.json'
-        #url =  F'https://api.carsxe.com/specs?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&vin={vin}
+        #url =  f'https://api.carsxe.com/specs?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&vin={vin}
         r = requests.get(url)
         return json.loads(r.text)
 
@@ -128,9 +171,10 @@ Acceleration: {self._acceleration['number']} ({self._acceleration['units']})
 Fuel Capacity: {self._fuel_capacity['number']} ({self._fuel_capacity['units']})
 City Mileage: {self._city_mileage['number']} ({self._city_mileage['units']})
 Highway Mileage: {self._highway_mileage['number']} ({self._highway_mileage['units']})
-
 '''
 
 if __name__ == '__main__':
     car = Car('JTJZK1BA1D2009651')
+    print(car)
+    car = Car('0', True)
     print(car)
