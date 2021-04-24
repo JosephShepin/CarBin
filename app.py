@@ -18,7 +18,7 @@ def postData():
     vin = request.form.get('vin', "")
 
     print("the received vin is 234 " + vin)
-    return {"h":"i"}
+    return render_template('results.html')
 
 
 @app.route('/upload', methods=['POST'])
