@@ -30,7 +30,7 @@ class Car:
         return {
             'make'              : data['attributes']['make'],
             'model'             : data['attributes']['model'],
-            'year'              : data['attributes']['year'],
+            'year'              : int(data['attributes']['year']),
             'trim'              : data['attributes']['trim'],
             'style'             : data['attributes']['style'],
             'type'              : data['model_body'],
@@ -74,7 +74,7 @@ class Car:
         return {
             'make'              : data['Make'],
             'model'             : data['Model'],
-            'year'              : data['Year'],
+            'year'              : int(data['Year']),
             'trim'              : data['Trim'],
             'style'             : 'ELECTRIC',
             'type'              : data['Type'],
@@ -157,7 +157,7 @@ class Car:
 
     @staticmethod
     def calculate_percent_change(x: float,y: float):
-        return 100*(1-x/y)
+        return -100*(1-x/y)
 
     def __str__(self):
          return f'''
