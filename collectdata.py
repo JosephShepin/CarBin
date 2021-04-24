@@ -1,4 +1,4 @@
-import requests, json, re
+import sys, requests, json, re
 
 class Car:
 
@@ -125,32 +125,37 @@ class Car:
             'highway_mileage' : self.calculate_percent_change(other._highway_mileage['number'],self._highway_mileage['number'])
         }
 
+    @staticmethod
     def fetch_carxse(vin: str):
         url = 'https://storage.googleapis.com/car-switch/respoonse.json'
         #url =  f'https://api.carsxe.com/specs?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&vin={vin}
         r = requests.get(url)
         return json.loads(r.text)
 
+    @staticmethod
     def fetch_carqueryapi(make: str, model: str, year: str, trim: str):
         url = f'https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getTrims&make={make}&year={year}'
         headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
         r = requests.get(url, headers=headers)
         for entry in json.loads(r.text[2:-2])['Trims']:
-            if self.fuzzy_string_match(entry['model_name'] + entry['model_trim'], model + trim):
+            if Car.fuzzy_string_match(entry['model_name'] + entry['model_trim'], model + trim):
                 return entry
         return {}
 
+    @staticmethod
     def fetch_image(make: str, model:str):
         url = f"http://api.carsxe.com/images?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&make={make}&model={model}"
         r = requests.get(url)
         return json.loads(r.text)["images"][0]["link"]
 
+    @staticmethod
     def fuzzy_string_match(str1: str, str2: str):
         not_word_pattern = re.compile('\W')
         str1 = re.sub(not_word_pattern, '', str1)
         str2 = re.sub(not_word_pattern, '', str2)
         return str1.lower() == str2.lower()
 
+    @staticmethod
     def calculate_percent_change(x: float,y: float):
         return 100*(1-x/y)
 
@@ -173,3 +178,13 @@ Fuel Capacity: {self._fuel_capacity['number']} ({self._fuel_capacity['units']})
 City Mileage: {self._city_mileage['number']} ({self._city_mileage['units']})
 Highway Mileage: {self._highway_mileage['number']} ({self._highway_mileage['units']})
 '''
+
+if __name__ == '__main__':
+    if (len(sys.argv) < 2):
+        print(f'Usage: {sys.argv[0]} [Your VIN] [Compare Electric Car ID]')
+        exit()
+    car_gas = Car(sys.argv[1])
+    print(car_gas)
+    car_elec = Car(sys.argv[2], True)
+    print(car_elec)
+    print(json.dumps(car_gas.compare(car_elec),indent=2))
