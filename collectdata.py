@@ -73,7 +73,7 @@ class Car:
         data = json.loads(open('electric-cars.json','r').read())['Electric Cars'][num]
         return {
             'make'              : data['Make'],
-            'model'             : data['Name'],
+            'model'             : data['Model'],
             'year'              : data['Year'],
             'trim'              : data['Trim'],
             'style'             : 'ELECTRIC',
@@ -88,19 +88,19 @@ class Car:
                 'units'     : 'kilometers/hour'
             },
             'torque'            : {
-                'number'    : float(data['Torque']),
+                'number'    : float(data['Mean Torque']),
                 'units'     : 'newtonmeters'
             },
             'horsepower'        : {
-                'number'    : float(data['Horsepower']),
+                'number'    : float(data['Mean Horsepower']),
                 'units'     : 'horsepower'
             },
             'acceleration'      : {
-                'number'    : float(data['Acceleration']),
+                'number'    : float(data['Avg Acceleration']),
                 'units'     : '60 miles/h/s'
             },
             'fuel_capacity'     : {
-                'number'    : float(data['Fuel Capacity']),
+                'number'    : float(data['Mean Range']),
                 'units'     : ''
             },
             'city_mileage'      : {
