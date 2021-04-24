@@ -2,7 +2,7 @@
 
 from flask import Flask,render_template, jsonify, make_response, request
 import os
-from pyzbar import pyzbar
+#from pyzbar import pyzbar
 from PIL import Image
 
 app = Flask(__name__)
