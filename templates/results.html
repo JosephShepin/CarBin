@@ -40,6 +40,7 @@
 <body>
     <div class="container" style="text-align: center;">
         <h1>Results</h1>
+        <p style='font-size: 19px;'>Compare your current car to a possible electric alternative</p>
         <p class="userCar" style="display:none">{{user_car}}</p>
         <p class="electricCars" style="display:none;">{{electric_cars}}</p>
         <p class="electricCarComparisons" style="display:none;">{{electric_car_comparisons}}</p>
@@ -51,6 +52,7 @@
         <div style='display:flex; justify-content: space-between'>
             <div></div>
             <div class="dropdown">
+                <p style='text-align: right; margin-bottom: 4px;'>Select A Model</p>
                 <button style="background: #76C893; color: white; margin-bottom: 10px;" class="btn dropdown-toggle" type="button" id="dropdownMenuButton"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 </button>
@@ -71,7 +73,7 @@
 
             <div style="flex:1; margin-right: 10px;" class="shadow-sm p-3 bg-white rounded"
                 style="padding: 10px !important; padding-bottom: 40px !important;">
-                <div style="text-align: left;" class="recDiv"></div>
+                <div style="margin-left: -4px; margin-top: -3px; margin-bottom: 5px; text-align: center; color: black; background:#E5E7E9; width: 160px; border-radius: 15px;" class="recDiv"></div>
 
                 <h3 style="text-align: left;" class="recommendedCarTitle"></h3>
 
@@ -113,20 +115,22 @@
         </div> -->
         <br>
         <h2>Environment Impact And Cost Analysis</h2>
-        <hr>
         <div class="graphs" style="display:flex;">
             <div class="shadow-sm p-3 bg-white rounded"
-                style="margin-right: 10px; padding: 10px !important; padding-bottom: 40px !important;">
+                style="margin-right: 10px; padding: 10px !important; padding-bottom: 60px !important;">
                 <div style="height: 300px !important; width:500px !important;">
-                    <h5>Carbon Footprint Over Time</h5>
+                    <h5>Carbon Footprint Over Time (Kg Co2)</h5>
                     <canvas id="costGraph" width="200" height="200"></canvas>
+                    <p>Time</p>
                 </div>
             </div>
             <div class="shadow-sm p-3 bg-white rounded"
-                style="margin-left: 10px; padding: 10px !important; padding-bottom: 40px !important;">
+                style="margin-left: 10px; padding: 10px !important; padding-bottom: 60px !important;">
                 <div style="height: 300px !important; width:500px !important; ">
-                    <h5>Maintenance Cost Over Time</h5>
+                    <h5>Maintenance Cost Over Time ($)</h5>
                     <canvas id="carbonGraph" width="200" height="200"></canvas>
+                    <p>Time</p>
+
                 </div>
             </div>
 
@@ -136,8 +140,7 @@
     </div>
     <br>
     <br>
-    <br>
-    <br>
+  
 </body>
 <script>
     var totalData = ``
@@ -181,12 +184,13 @@
     function addCommas(x) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
+    recDiv.innerHTML = "Recommended Car"
 
     function setIndex(i) {
         if (i == 0) {
-            recDiv.innerHTML = "Recommended Car"
+            recDiv.style.visibility = "visible"
         } else {
-            recDiv.innerHTML = "&nbsp;"
+            recDiv.style.visibility = "hidden"
         }
         if (!Object.keys(carbonGraph).includes("foo")) {
             carbonGraph.destroy();
@@ -256,7 +260,7 @@
         addToTemplate(Math.round(c2.highwaymileage.number), "MPGe", "", false)
 
         // addToTemplate("Year ", Math.round(c2.year), "", false)
-        addToTemplate("MSRP $" + addCommas(Math.round(c2.price.number)), c2.price.units, comp.price, true)
+        addToTemplate("MSRP $" + addCommas(Math.round(c2.price.number)), "USD" ,Math.round(100*(c2.price.units,c1.msrp.number/c2.price.number)/100), true)
         addToTemplate(Math.round(c2.range.number), c2.range.units + " of range", comp.range, false)
         addToTemplate(Math.round(c2.torque.number), "foot-pounds of torque", comp.range, comp.torque, false)
         // addToTemplate(Math.round(c2.topspeed.number), c2.topspeed.units)
@@ -274,13 +278,13 @@
                 labels: lables,
                 datasets: [{
                     labels: lables,
-                    label: 'Gas',
+                    label: 'Your Car',
                     data: userCarCostTime,
                     borderColor: "red",
                     borderWidth: 1
                 }, {
                     labels: lables,
-                    label: 'Electric',
+                    label: 'EV',
                     data: evCarData,
                     borderColor: "Green",
                     borderWidth: 1
@@ -288,7 +292,8 @@
             },
             options: {
                 maintainAspectRatio: false,
-                responsive: true
+                responsive: true,
+                
             }
         });
 
@@ -299,13 +304,13 @@
                 labels: lables,
                 datasets: [{
                     labels: lables,
-                    label: 'Gas',
+                    label: 'Your Car',
                     borderColor: "red",
                     data: yourCarFootprintArr,
                     borderWidth: 1
                 }, {
                     labels: lables,
-                    label: 'Electric',
+                    label: 'EV',
                     data: evFootprintArr,
                     borderColor: "green",
                     borderWidth: 1
