@@ -24,11 +24,13 @@ def results():
     ecars.remove(first)
     ecars[:0] = [first]
 
-    jsonecars=[]
+    json_ecars=[]
+    ecar_comparisons=[]
     for ecar in ecars:
-        jsonecars.append(ecar.get_dict())
+        ecar_comparisons.append(car.compare(ecar))
+        json_ecars.append(ecar.get_dict())
 
-    return render_template('results.html',user_car=json.dumps(car),electric_cars=json.dumps({'Electric Cars':jsonecars}))
+    return render_template('results.html',user_car=json.dumps(car),electric_cars=json.dumps({'Electric Cars':json_ecars}),electric_car_comparisons=json.dumps({'Electric Car Comparisons':ecar_comparisons}))
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
