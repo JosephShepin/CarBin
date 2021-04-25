@@ -4,9 +4,9 @@
         <br>
         <div class="shadow-sm p-3 mb-5 bg-white rounded">
             <h2>Welcome To CarBin</h2>
-            <p>Find a comparable electric car that's better for the envirnment, and exceeds your expectations.</p>
+            <p>Find an Electric Car that's Great for the Environment and Exceeds your Expectations.</p>
            	<br>
-            <p>Enter your car's Make, Model, and Year</p>
+            <p>Enter your Car's Make, Model, and Year</p>
 			<form method="GET" action="/results" style="margin-bottom:-12px">
 				<div class="input-group mb-3">
 					<input required name="make" class="form-control" id="make-input" style="display:inline-block" value="Lexus" placeholder="Car's Make" />
@@ -18,7 +18,17 @@
 				</div>
 			</form>
 			<br>
-            <p>Or enter your car's VIN number</p>
+			<p><b>Or</b> Enter your Car's VIN Number</p>
+			<form method="GET" action="/results" style="margin-bottom:-12px">
+				<div class="input-group mb-3">
+					<input required name="vin" class="form-control" id="vin-input" style="display:inline-block" value="JTJZK1BA1D2009651" placeholder="Car's Vin Number" />
+					<div class="input-group-append">
+						<input style="display:inline-block; background-color: #2ECC71; color: white;" value="Go" type="submit" class="btn"></input>
+					</div>
+				</div>
+			</form>
+			<br>
+			<p><b>Or</b> Upload a Picture of your License Plate</p>
 			<form method="GET" action="/results" style="margin-bottom:-12px">
 				<div class="input-group mb-3">
 					<input required name="vin" class="form-control" id="vin-input" style="display:inline-block" value="JTJZK1BA1D2009651" placeholder="Car's Vin Number" />
