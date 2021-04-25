@@ -1,6 +1,9 @@
 import sys, requests, json, re
 from datetime import date
 
+# The car class can be constucted by vin or plate number through the uses of CarQuery and CarsXE.
+# Electric cars are also parsed through the Car class and created as Car objects
+# This file mainly uses json from Python's standard library as well as dictionaries to compile information 
 class Car:
     def __init__(self, id: str, is_electric: bool = False, is_new: bool = False, id_is_plate: bool = False):
         self._is_electric = is_electric
