@@ -85,8 +85,23 @@
 
             <div style="flex:1; margin-right: 10px;" class="shadow-sm p-3 bg-white rounded"
                 style=" padding: 10px !important; padding-bottom: 40px !important;">
-                <div style='text-align: left'>Recommended Car</div>
-                <h3 style='text-align: left' class="recommendedCarTitle"></h3>
+                <div style="display: flex; justify-content: space-between;">
+                    <div>
+                        <div>Recommended Car</div>
+                        <h3 class="recommendedCarTitle"></h3>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Dropdown button
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </div>
+                </div>
                 <hr>
                 <img class="car-img recommendedCarImg"></img>
                 <div class="recommendedCarSpecs" style="padding-top: 10px;"></div>
@@ -145,8 +160,7 @@
         </div>
         <br>
         <br>
-        <h2>Detailed Spec Comparison</h2>
-        <hr>
+
     </div>
     <br>
     <br>
