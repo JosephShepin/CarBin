@@ -9,10 +9,10 @@ Introducing: CarBin; a tool that compares popular electric cars to your current 
 <img  width="350"  src="https://storage.googleapis.com/car-switch/example1/thing2.png" border="0">
 
 Thanks 3rd-parties!
- - CarsXE API
- - CarQuery API
+ - CarsXE [API](https://api.carsxe.com/docs)
+ - CarQuery [API](https://www.carqueryapi.com/documentation/)
  - Flask
- - OpenCV
+ - OpenCV 
  - Werkzeug
  - IMUtils
  - Cffi
@@ -24,8 +24,8 @@ Thanks 3rd-parties!
  - Jquery and [docs](https://api.jquery.com/ajaxSend/)
 
 Obligatory thanks for the help!
- - StackOverflow
- - Medium
+ - StackOverflow for everything
+ - Medium for this [article](https://medium.com/programming-fever/license-plate-recognition-using-opencv-python-7611f85cdd6c)
 
 
 > CarBin: The Future is Electric
