@@ -153,16 +153,26 @@ class Car:
         return 1 / (.55 * (1 / self._city_mileage) + .45 * (1 / self._highway_mileage))
 
     def calculate_emissions(self):
-        if is_electric:
-            return 0.0
+        emission = 0
+        if self.is_electric:
+            emission = 13.76 / calculate_average_mileage()
         else:
-            return 5.4805 / calculate_average_mileage()
+            emission = 5.4805 / calculate_average_mileage()
+        return {
+            'number' : emission,
+            'units'  : 'kilogram/kilometer'
+        }
 
     def calculate_annual_cost(self):
-        if is_electric:
-            return 57915 / calculate_average_mileage()
+        cost = 0
+        if self.is_electric:
+            cost = 57915 / calculate_average_mileage()
         else:
-            return 40500 / calculate_average_mileage()
+            cost = 40500 / calculate_average_mileage()
+        return {
+            'number' : cost,
+            'units'  : 'kilogram/kilometer'
+        }
 
     @staticmethod
     def fetch_carxse(vin: str):
