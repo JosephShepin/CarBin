@@ -40,10 +40,21 @@
 <body>
     <div class="container" style="text-align: center; padding-top: 30px;">
         <h1>Results</h1>
+
         <p class="userCar" style="display:none;">{{user_car}}</p>
         <p class="electricCars" style="display:none;">{{electric_cars}}</p>
         <p class="electricCarComparisons" style="display:none;">{{electric_car_comparisons}}</p>
         <hr>
+        <div style='display:flex; justify-content: space-between'>
+            <div></div>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                </div>
+            </div>
+        </div>
         <br>
         <div class="" style="display:flex; justify-content:flex-start;">
             <div style="flex:1; margin-right: 10px;" class="shadow-sm p-3 bg-white rounded"
@@ -56,22 +67,11 @@
             </div>
 
             <div style="flex:1; margin-right: 10px;" class="shadow-sm p-3 bg-white rounded"
-                style=" padding: 10px !important; padding-bottom: 40px !important;">
-                <div style="display: flex; justify-content: space-between;">
-                    <div>
-                        <div style="margin-left: -23px">Recommended Car</div>
-                        <h3 class="recommendedCarTitle"></h3>
-                    </div>
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                style="padding: 10px !important; padding-bottom: 40px !important;">
+                <div style="text-align: left;">Recommended Car</div>
 
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <h3 style="text-align: left;" class="recommendedCarTitle"></h3>
 
-                        </div>
-                    </div>
-                </div>
                 <hr>
                 <img class="car-img recommendedCarImg"></img>
                 <div class="recommendedCarSpecs" style="padding-top: 20px;"></div>
@@ -154,14 +154,16 @@
 
     function addToTemplate(s, units) {
         totalData +=
-            `<div style="text-align: left; padding-left: 10px;"><p style="font-size:20px; text-align: left; display: inline-block">${s}</p><p style=" text-align: left; padding-left: 4px; font-size:15px; font-weight:bold;  display: inline-block">${units}</p></div>`
+        
+            `<div><div style="text-align: left; padding-left: 10px; margin-top: -10px"><p style="font-size:20px; text-align: left; display: inline-block">${s}</p><p style=" text-align: left; padding-left: 4px; font-size:15px; font-weight:bold;  display: inline-block">${units}</p></div></div>`
     }
 
     function addCommas(x) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
-    function setIndex(i) {totalData = ``
+    function setIndex(i) {
+        totalData = ``
         var recoCar = electricCars.ElectricCars[i]
         document.querySelector("#dropdownMenuButton").innerHTML = recoCar.make + " " + recoCar.model
         console.log(electricCars)
@@ -171,30 +173,30 @@
         yourCarImg.src = userCar.image
         recommendedCarImg.src = recoCar.image
 
-        var template = `<p style="text-align: left; padding-top:10px" class=""></p>`
-
-
         console.log(electricCars)
         var c1 = userCar
         var c2 = electricCars.ElectricCars[i]
-        console.log("C@")
-        console.log(c2)
 
+        addToTemplate("Year ", Math.round(c1.year))
         addToTemplate("$" + addCommas(Math.round(c1.price.number)), c1.price.units)
         addToTemplate(Math.round(c1.range.number), c1.range.units + " range")
         addToTemplate(Math.round(c1.torque.number), c1.torque.units)
         addToTemplate(Math.round(c1.topspeed.number), c1.topspeed.units)
+        addToTemplate(Math.round(c1.horsepower.number), c1.horsepower.units)
+        addToTemplate(Math.round(c1.topspeed.number),c1.topspeed.units + " Top Speed")
         $('.yourCarSpecs').empty()
         $('.yourCarSpecs').append(totalData);
 
         totalData = ``
-
+        addToTemplate("Year ", Math.round(c2.year))
         addToTemplate("$" + addCommas(Math.round(c2.price.number)), c2.price.units)
-        addToTemplate(Math.round(c2.range.number), c2.range.units + " range")
+        addToTemplate(Math.round(c2.range.number), c2.range.units + " of range")
         addToTemplate(Math.round(c2.torque.number), c2.torque.units)
         addToTemplate(Math.round(c2.topspeed.number), c2.topspeed.units)
-        $('.recommendedCarSpecs').empty()
+        addToTemplate(Math.round(c2.horsepower.number), c2.horsepower.units)
+        addToTemplate(Math.round(c2.topspeed.number),c2.topspeed.units + " Top Speed")
 
+        $('.recommendedCarSpecs').empty()
         $('.recommendedCarSpecs').append(totalData);
 
     }
