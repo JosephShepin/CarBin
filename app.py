@@ -19,43 +19,18 @@ def main():
 def about():
     return render_template('about.html')
 
-"""
-@app.route('/plateresults', methods=["GET"])
-def plate_results():
-    plate = request.args.get('plate', "")
-    car = Car(plate,False,False,True)
-    car = json.dumps(car.get_dict())
-    return redirect(f'/results/{car}')
-
-@app.route('/vinresults', methods=["GET"])
-def vin_results():
-    vin = request.args.get('vin', "")
-    car = Car(vin)
-    car = json.dumps(car.get_dict())
-    return redirect(f'/results/{car}')
-
-@app.route('/pictureresults', methods=["GET"])
-def picture_results():
-    pass
-"""
-
-@app.route('/results', methods=["GET"])
+@app.route('/results', methods=["GET","POST"])
 def results():
 
     if request.args.get('plate', '') != '':
         car = Car(request.args.get('plate', ''),False,False,True)
     elif request.args.get('vin', '') != '':
         car = Car(request.args.get('vin', ''))
-    else
-        file = request.files['file']
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            path=os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(path)
-            car = Car(get_plate_from_image(path),False,False,True)
+    else:
+        file = request.files['imgfile']
+        path=os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+        file.save(path)
+        car = Car(get_plate_from_image(path),False,False,True)
 
     ecars=[]
     for id_num in list(json.loads(open('electric-cars.json','r').read())['Electric Cars']):
