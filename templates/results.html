@@ -38,13 +38,16 @@
 </style>
 
 <body>
-    <div class="container" style="text-align: center; padding-top: 30px;">
+    <div class="container" style="text-align: center;">
         <h1>Results</h1>
-
         <p class="userCar" style="display:none;">{{user_car}}</p>
         <p class="electricCars" style="display:none;">{{electric_cars}}</p>
         <p class="electricCarComparisons" style="display:none;">{{electric_car_comparisons}}</p>
-        <hr>
+        <p class="footprintTime" style="display:none;">{{footprint_time}}</p>
+        <p class="costTime" style="display:none;">{{cost_time}}</p>
+        <p class="userCarFootprintTime" style="display:none;">{{user_car_footprint_time}}</p>
+        <p class="userCarCostTime" style="display:none;">{{user_car_cost_time}}</p>
+
         <div style='display:flex; justify-content: space-between'>
             <div></div>
             <div class="dropdown">
@@ -55,7 +58,7 @@
                 </div>
             </div>
         </div>
-        <br>
+
         <div class="" style="display:flex; justify-content:flex-start;">
             <div style="flex:1; margin-right: 10px;" class="shadow-sm p-3 bg-white rounded"
                 style=" padding: 10px !important; padding-bottom: 40px !important;">
@@ -108,25 +111,25 @@
                 </div>
             </div>
         </div> -->
-        <br>
-        <br>
+
         <h2>Long term data</h2>
         <hr>
         <div class="graphs" style="display:flex;">
             <div class="shadow-sm p-3 bg-white rounded"
                 style="margin-right: 10px; padding: 10px !important; padding-bottom: 40px !important;">
-                <div style="height: 300px !important; width:500px !important; ">
+                <div style="height: 300px !important; width:500px !important;">
                     <h5>Carbon Footprint over time</h5>
-                    <canvas id="carbonGraph" width="200" height="200"></canvas>
+                    <canvas id="costGraph" width="200" height="200"></canvas>
                 </div>
             </div>
             <div class="shadow-sm p-3 bg-white rounded"
                 style="margin-left: 10px; padding: 10px !important; padding-bottom: 40px !important;">
-                <div style="height: 300px !important; width:500px !important;">
+                <div style="height: 300px !important; width:500px !important; ">
                     <h5>Cost over time</h5>
-                    <canvas id="costGraph" width="200" height="200"></canvas>
+                    <canvas id="carbonGraph" width="200" height="200"></canvas>
                 </div>
             </div>
+
         </div>
         <br>
         <br>
@@ -141,6 +144,17 @@
 
     var green = "#28a745"
     var red = "#dc3545"
+    var carbonGraph = {
+        "foo": "a"
+    }
+    var costGraph = {
+        "foo": "a"
+    }
+
+
+    var footprintTime = JSON.parse(document.querySelector(".footprintTime").innerHTML)
+    var userCarFootprintTime = JSON.parse(document.querySelector(".userCarFootprintTime").innerHTML)
+
 
     var yourCarTitle = document.querySelector(".yourCarTitle")
     var recommendedCarTitle = document.querySelector(".recommendedCarTitle")
@@ -152,9 +166,11 @@
     var electricCars = JSON.parse(document.querySelector(".electricCars").innerHTML)
     var electricCarComparisons = JSON.parse(document.querySelector(".electricCarComparisons").innerHTML)
 
-    function addToTemplate(s, units, percent) {
+
+
+    function addToTemplate(s, units, percent, invert) {
         totalData +=
-            `<div><div style="text-align: left; padding-left: 10px; margin-top: -10px"><p style="font-size:20px; text-align: left; display: inline-block">${s}</p><p style=" text-align: left; padding-left: 4px; font-size:15px; font-weight:bold;  display: inline-block">${units}</p><p style="display: inline-block; padding-left: 10px; color:${percent > 0 ? green : red}">${percent == "" ? "" :Math.round(percent*10)/10}${percent == "" ? "" : "%"}</p></div></div>`
+            `<div><div style="text-align: left; padding-left: 10px; margin-top: -10px"><p style="font-size:20px; text-align: left; display: inline-block">${s}</p><p style=" text-align: left; padding-left: 4px; font-size:15px; font-weight:bold;  display: inline-block">${units}</p><p style="display: inline-block; padding-left: 10px; color:${percent < 0 ||  (units == "USD" && percent > 0) ? red : green}">${percent == "" ? "" :Math.round(percent*10)/10}${percent == "" ? "" : "%"}</p></div></div>`
     }
 
     function addCommas(x) {
@@ -162,6 +178,19 @@
     }
 
     function setIndex(i) {
+
+        console.log("carbonGraph")
+        console.log(typeof carbonGraph)
+        console.log(Object.keys(carbonGraph).includes("foo"))
+        if (!Object.keys(carbonGraph).includes("foo")) {
+            console.log("DESTROYING")
+            carbonGraph.destroy();
+            costGraph.destroy();
+        } else {
+            console.log("NOT DESTROTING")
+        }
+
+
         var comp = electricCarComparisons.ElectricCarComparisons[i]
         totalData = ``
         var recoCar = electricCars.ElectricCars[i]
@@ -172,33 +201,117 @@
         yourCarImg.src = userCar.image
         recommendedCarImg.src = recoCar.image
 
-        
+        comp.torque = (-1) * comp.torque
 
         var c1 = userCar
         var c2 = electricCars.ElectricCars[i]
 
-        addToTemplate("Year ", Math.round(c1.year),"")
-        addToTemplate("$" + addCommas(Math.round(c1.price.number)),c1.price.units,"")
-        addToTemplate(Math.round(c1.range.number), c1.range.units + " range","")
-        addToTemplate(Math.round(c1.torque.number), c1.torque.units,"")
+        var evFootprint = (footprintTime)[i]
+        var yourCarFootprint = (userCarFootprintTime)
+
+        var evFootprintArr = []
+        var yourCarFootprintArr = []
+
+
+        var costTime = document.querySelector(".costTime")
+        var userCarCostTime = JSON.parse(document.querySelector(".userCarCostTime").innerHTML)
+
+        var userCarCostTimeKeys = Object.keys(userCarCostTime)
+
+
+        data = JSON.parse(costTime.innerHTML)[i]
+        // var gasCarData = JSON.parse(data)
+        var keys = Object.keys(data)
+        var evCarData = [];
+        var gasCarData = [];
+        for (var key in keys) {
+            evFootprintArr.push(evFootprint[keys[key]])
+
+            yourCarFootprintArr.push(yourCarFootprint[keys[key]])
+        }
+        console.log(yourCarFootprintArr)
+
+
+        for (var key in keys) {
+            evCarData.push(data[keys[key]])
+            gasCarData.push(data[keys[key]])
+        }
+
+        addToTemplate("Year ", Math.round(c1.year), "", false)
+        addToTemplate("$" + addCommas(Math.round(c1.price.number)), c1.price.units, "", true)
+        addToTemplate(Math.round(c1.range.number), c1.range.units + " range", "", false)
+        addToTemplate(Math.round(c1.torque.number), c1.torque.units, "", false)
         // addToTemplate(Math.round(c1.topspeed.number), c1.topspeed.units)
-        addToTemplate(Math.round(c1.horsepower.number), c1.horsepower.units,"")
+        addToTemplate(Math.round(c1.horsepower.number), c1.horsepower.units, "", false)
         // addToTemplate(Math.round(c1.topspeed.number),c1.topspeed.units + " Top Speed")
         $('.yourCarSpecs').empty()
         $('.yourCarSpecs').append(totalData);
 
         totalData = ``
-        addToTemplate("Year ", Math.round(c2.year),"")
-        addToTemplate("$" + addCommas(Math.round(c2.price.number)), c2.price.units,comp.price)
-        addToTemplate(Math.round(c2.range.number), c2.range.units + " of range",comp.range)
-        addToTemplate(Math.round(c2.torque.number), c2.torque.units,comp.range,comp.torque)
+        addToTemplate("Year ", Math.round(c2.year), "", false)
+        addToTemplate("$" + addCommas(Math.round(c2.price.number)), c2.price.units, comp.price, true)
+        addToTemplate(Math.round(c2.range.number), c2.range.units + " of range", comp.range, false)
+        addToTemplate(Math.round(c2.torque.number), c2.torque.units, comp.range, comp.torque, false)
         // addToTemplate(Math.round(c2.topspeed.number), c2.topspeed.units)
-        addToTemplate(Math.round(c2.horsepower.number), c2.horsepower.units,comp.horsepower)
+        addToTemplate(Math.round(c2.horsepower.number), c2.horsepower.units, comp.horsepower, false)
         // addToTemplate(Math.round(c2.topspeed.number),c2.topspeed.units + " Top Speed")
 
         $('.recommendedCarSpecs').empty()
         $('.recommendedCarSpecs').append(totalData);
 
+
+
+
+        var ctx = document.getElementById('carbonGraph');
+        var lables = keys
+        carbonGraph = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: lables,
+                datasets: [{
+                    labels: lables,
+                    label: 'Gas',
+                    data: userCarCostTime,
+                    borderColor: "red",
+
+                    borderWidth: 1
+                }, {
+                    labels: lables,
+                    label: 'Electric',
+                    data: evCarData,
+                    borderColor: "Green",
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                responsive: true
+            }
+        });
+        var ctx = document.getElementById('costGraph');
+        costGraph = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: lables,
+                datasets: [{
+                    labels: lables,
+                    label: 'Gas',
+                    borderColor: "red",
+                    data: yourCarFootprintArr,
+                    borderWidth: 1
+                }, {
+                    labels: lables,
+                    label: 'Electric',
+                    data: evFootprintArr,
+                    borderColor: "green",
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                responsive: true
+            }
+        });
     }
 
     setIndex(0)
@@ -248,52 +361,6 @@
         animate(circle, percent, start, end)
 
     }
-    var ctx = document.getElementById('carbonGraph');
-    var lables = [1, 2, 3, 4, 5, 6]
-    var carbonGraph = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: lables,
-            datasets: [{
-                label: 'Electric',
-                data: [200, 210, 220, 230, 240, 250],
-                borderColor: "red",
-                borderWidth: 1
-            }, {
-                labels: lables,
-                label: 'Gas',
-                data: [100, 130, 160, 190, 210, 230],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            maintainAspectRatio: false,
-            responsive: true
-        }
-    });
-    var ctx = document.getElementById('costGraph');
-    var lables = [1, 2, 3, 4, 5, 6]
-    var carbonGraph = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: lables,
-            datasets: [{
-                label: 'Electric',
-                data: [200, 210, 220, 230, 240, 250],
-                borderColor: "red",
-                borderWidth: 1
-            }, {
-                labels: lables,
-                label: 'Gas',
-                data: [100, 130, 160, 190, 210, 230],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            maintainAspectRatio: false,
-            responsive: true
-        }
-    });
 </script>
 
 </html>
