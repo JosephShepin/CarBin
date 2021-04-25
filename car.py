@@ -143,7 +143,7 @@ class Car:
         for car in other_cars:
             if Car.fuzzy_string_match(self._type, similar._type):
                 if Car.fuzzy_string_match(self._type, car._type):
-                    if abs(car._price['number'] - self._price['number']) < abs(similar._price['number'] - self._number['number']):
+                    if abs(car._price['number'] - self._price['number']) < abs(similar._price['number'] - self._price['number']):
                         similar = car
             elif abs(car._price['number'] - self._price['number']) < abs(similar._price['number'] - self._price['number']):
                 similar = car
