@@ -1,8 +1,8 @@
-from flask import Flask,render_template, jsonify, make_response, request
+from flask import Flask, render_template, jsonify, make_response, request
 from car import Car
 from pyzbar import pyzbar
 from PIL import Image
-import os
+import os, json
 
 app = Flask(__name__)
 
@@ -10,14 +10,20 @@ app = Flask(__name__)
 def main():
     return render_template('collect.html')
 
-@app.route('/results')
-def results():
-    return render_template('results.html')
-
-@app.route('/get_car', methods=["GET"])
+@app.route('/results', methods=["GET"])
 def postData():
     vin = request.args.get('vin', "")
     car = Car(vin) 
+    ret='{eletric_cars:['
+    electric_cars = []
+    for id_num in list(json.loads(open('electric-cars.json','r').read())['Electric Cars']):
+        electric_cars.append(Car(id_num,True))
+
+    ret=''
+    for ecar in electric_cars:
+        ret+=ecar.__str__()+'<br><br><br>'
+    return ret
+
     return render_template('results.html',results=car)
 
 
