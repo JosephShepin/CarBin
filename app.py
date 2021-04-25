@@ -17,7 +17,7 @@ def about():
 @app.route('/plateresults', methods=["GET"])
 def plate_results():
     plate = request.args.get('plate', "")
-    car = Car(plate,True)
+    car = Car(plate,False,False,True)
     car = json.dumps(car.get_dict())
     return redirect(f'/results/{car}')
 
