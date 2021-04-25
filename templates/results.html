@@ -40,7 +40,7 @@
 <body>
     <div class="container" style="text-align: center;">
         <h1>Results</h1>
-        <p class="userCar" style="display:none;">{{user_car}}</p>
+        <p class="userCar">{{user_car}}</p>
         <p class="electricCars" style="display:none;">{{electric_cars}}</p>
         <p class="electricCarComparisons" style="display:none;">{{electric_car_comparisons}}</p>
         <p class="footprintTime" style="display:none;">{{footprint_time}}</p>
@@ -112,7 +112,7 @@
             </div>
         </div> -->
         <br>
-        <h2>Envirnmental Impact And Cost Analysis</h2>
+        <h2>Environment Impact And Cost Analysis</h2>
         <hr>
         <div class="graphs" style="display:flex;">
             <div class="shadow-sm p-3 bg-white rounded"
@@ -125,7 +125,7 @@
             <div class="shadow-sm p-3 bg-white rounded"
                 style="margin-left: 10px; padding: 10px !important; padding-bottom: 40px !important;">
                 <div style="height: 300px !important; width:500px !important; ">
-                    <h5>Maintence Cost Over Time</h5>
+                    <h5>Maintenance Cost Over Time</h5>
                     <canvas id="carbonGraph" width="200" height="200"></canvas>
                 </div>
             </div>
@@ -176,10 +176,6 @@
         if (units == "MPG" || units == "MPGe") {
             totalData += `<hr style='margin-top:-10px;'>`
         }
-
-
-
-
     }
 
     function addCommas(x) {
@@ -190,7 +186,7 @@
         if (i == 0) {
             recDiv.innerHTML = "Recommended Car"
         } else {
-            recDiv.innerHTML = ""
+            recDiv.innerHTML = "&nbsp;"
         }
         if (!Object.keys(carbonGraph).includes("foo")) {
             carbonGraph.destroy();
@@ -247,6 +243,7 @@
         addToTemplate(Math.round(c1.highwaymileage.number), "MPG", "", false)
         // addToTemplate("Year ", Math.round(c1.year), "", false)
         addToTemplate("Estimated Value $" + addCommas(Math.round(c1.price.number)), c1.price.units, "", true)
+        addToTemplate("MSRP $" + addCommas(Math.round(c1.msrp.number)),"USD", "", true)
         addToTemplate(Math.round(c1.range.number), c1.range.units + " range", "", false)
         addToTemplate(Math.round(c1.torque.number), "foot-pounds of torque", "", false)
         // addToTemplate(Math.round(c1.topspeed.number), c1.topspeed.units)
@@ -280,7 +277,6 @@
                     label: 'Gas',
                     data: userCarCostTime,
                     borderColor: "red",
-
                     borderWidth: 1
                 }, {
                     labels: lables,
