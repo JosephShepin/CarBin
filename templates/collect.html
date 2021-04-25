@@ -38,9 +38,10 @@
     </div>
 </body>
 <script>
+//use of ajax
     function getData() {
         var vin = document.querySelector("#vin-input").value
-
+	
         $.ajax({
             url: '/postData/' + vin,
             success: function (data) {
