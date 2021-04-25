@@ -38,9 +38,9 @@ def picture_results():
 def results():
 
     if request.args.get('plate', '') != None:
-        car = Car(plate,False,False,True)
+        car = Car(request.args.get('plate', ''),False,False,True)
     else:
-        car = Car(vin)
+        car = Car(request.args.get('vin', ''))
 
     ecars=[]
     for id_num in list(json.loads(open('electric-cars.json','r').read())['Electric Cars']):
