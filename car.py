@@ -145,17 +145,28 @@ class Car:
             'comparision' : self.compare(other)
         }
 
-    def find_similar(self):
-         pass
+    def find_similar(self, other_cars : list):
+        similar = other_cars[0]
+         for car in other_cars:
+             if fuzzy_string_match(self._type, similar._type):
+                 if fuzzy_string_match(self._type, car._type):
+                     if abs(car._price - self._type) < abs(similar._price - self._type):
+                         similar = car
+             elif abs(car._price - self._type) < abs(similar._price - self._type):
+                 similar = car
+
 
     def calculate_emissions(self):
-        average_mileage = 1 / (.55 * (1 / self._city_mileage) + .45 * (1 / self._highway_mileage))
-        return 5.4805 / average_mileage
+        if is_electric:
+            return 0.0
+        else:
+            average_mileage = 1 / (.55 * (1 / self._city_mileage) + .45 * (1 / self._highway_mileage))
+            return 5.4805 / average_mileage
 
     @staticmethod
     def fetch_carxse(vin: str):
         url = 'https://storage.googleapis.com/car-switch/respoonse.json'
-        #url =  f'https://api.carsxe.com/specs?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&vin={vin}'
+        #url =  f' http://api.carsxe.com/specs?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&vin={vin}'
         r = requests.get(url)
         return json.loads(r.text)
 
