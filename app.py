@@ -35,7 +35,7 @@ def picture_results():
 """
 
 @app.route('/results', methods=["GET"])
-def results(car):
+def results():
 
     if request.args.get('plate', '') != None:
         car = Car(plate,False,False,True)
