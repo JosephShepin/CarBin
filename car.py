@@ -2,7 +2,6 @@ import sys, requests, json, re
 from datetime import date
 
 class Car:
-
     def __init__(self, id: str, is_electric: bool = False, is_new: bool = False):
         self._is_electric = is_electric
         if (is_electric):
@@ -130,50 +129,53 @@ class Car:
     def compare(self, other):
         return {
             'images'           : {
-                'car 1'  : self._image,
-                'car 2'  : self._image
+                'car1'   : self._image,
+                'car2'   : self._image
             },
             'price'           : {
-                'car 1'  : self._price['number'],
-                'car 2'  : other._price['number'],
+                'car1'   : self._price['number'],
+                'car2'   : other._price['number'],
                 'change' : self.calculate_percent_change(other._price['number'], self._price['number']),
             },
             'top_speed'       : {
-                'car 1'  : self._top_speed['number'],
-                'car 2'  : other._top_speed['number'],
+                'car1'   : self._top_speed['number'],
+                'car2'   : other._top_speed['number'],
                 'change' : self.calculate_percent_change(other._top_speed['number'], self._top_speed['number']),
             },
             'torque'          : {
-                'car 1'  : self._torque['number'],
-                'car 2'  : other._torque['number'],
+                'car1'   : self._torque['number'],
+                'car2'   : other._torque['number'],
                 'change' : self.calculate_percent_change(other._torque['number'], self._torque['number']),
             },
             'horsepower'      : {
-                'car 1'  : self._horsepower['number'],
-                'car 2'  : other._horsepower['number'],
+                'car1'   : self._horsepower['number'],
+                'car2'   : other._horsepower['number'],
                 'change' : self.calculate_percent_change(other._horsepower['number'], self._horsepower['number']),
             },
             'acceleration'    : {
-                'car 1'  : self._acceleration['number'],
-                'car 2'  : other._acceleration['number'],
+                'car1'   : self._acceleration['number'],
+                'car2'   : other._acceleration['number'],
                 'change' : self.calculate_percent_change(other._acceleration['number'], self._acceleration['number']),
             },
             'range'   : {
-                'car 1'  : self._range['number'],
-                'car 2'  : other._range['number'],
+                'car1'   : self._range['number'],
+                'car2'   : other._range['number'],
                 'change' : self.calculate_percent_change(other._range['number'], self._range['number']),
             },
             'city_mileage'    : {
-                'car 1'  : self._city_mileage['number'],
-                'car 2'  : other._city_mileage['number'],
+                'car1'   : self._city_mileage['number'],
+                'car2'   : other._city_mileage['number'],
                 'change' : self.calculate_percent_change(other._city_mileage['number'], self._city_mileage['number']),
             },
             'highway_mileage' : {
-                'car 1'  : self._highway_mileage['number'],
-                'car 2'  : other._highway_mileage['number'],
+                'car1'   : self._highway_mileage['number'],
+                'car2'   : other._highway_mileage['number'],
                 'change' : self.calculate_percent_change(other._highway_mileage['number'], self._highway_mileage['number']),
             }
         }
+
+    def find_similar(self):
+         pass
 
     @staticmethod
     def fetch_carxse(vin: str):
@@ -208,6 +210,24 @@ class Car:
     @staticmethod
     def calculate_percent_change(x: float,y: float):
         return 100*(1-x/y)
+
+#    def getJSON(self):
+#        return json.dumps({self._make            = data['make']
+#        self._model
+#        self._year
+#        self._trim
+#        self._style
+#        self._type
+#        self._fuel_type
+#        self._price
+#        self._top_speed
+#        self._torque
+#        self._horsepower
+#        self._acceleration
+#        self._range
+#        self._city_mileage
+#        self._highway_mileage
+#        self._image
 
     def __str__(self):
          return f'''
