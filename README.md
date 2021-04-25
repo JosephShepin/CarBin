@@ -19,11 +19,10 @@ Thanks 3rd-parties!
  - Cffi
  - Click
  - Gunicorn
-
- - JQuery
  - Bootstrap CDN
-- Chart.js and [example code](https://www.chartjs.org/docs/latest/samples/bar/vertical.html)
-- 
+ - Chart.js and [example code](https://www.chartjs.org/docs/latest/samples/bar/vertical.html)
+ - Jquery and [docs](https://api.jquery.com/ajaxSend/)
+
 Obligatory thanks for the help!
  - StackOverflow
  - Medium
