@@ -176,6 +176,11 @@ class Car:
 
     def get_emissions_over_time(self, years, is_new = True):
         emission = 0.0
+        if is_new:
+            if self._is_electric:
+                emission = 8280.0
+            else:
+                emission = 5600
         emission_change = self.calculate_emissions()['number']
         emissions_over_time = {}
         for i in range(years):
@@ -185,6 +190,8 @@ class Car:
 
     def get_cost_over_time(self, years, is_new = True):
         cost = 0.0
+        if is_new:
+            cost = self._price['number']
         cost_change = self.calculate_annual_cost()['number']
         costs_over_time = {}
         for i in range(years):
