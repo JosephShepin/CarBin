@@ -30,7 +30,7 @@ def results():
         ecar_comparisons.append(car.compare(ecar))
         json_ecars.append(ecar.get_dict())
 
-    user_car_json = json.dumps(car).replace('_','')
+    user_car_json = car.get_JSON()
     electric_cars_json = json.dumps({'ElectricCars':json_ecars}).replace('_','')
     electric_car_comparisons_json = json.dumps({'ElectricCarComparisons':ecar_comparisons}).replace('_','')
     return render_template('results.html',user_car=user_car_json,electric_cars=electric_cars_json,electric_car_comparisons=electric_car_comparisons_json)
