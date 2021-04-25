@@ -1,8 +1,12 @@
 
 import cv2, imutils, pytesseract, sys
 import numpy as np
-#pytesseract.pytesseract.tesseract_cmd = 'D:/iyadh/AppData/Local/Programs/Tesseract-OCR/tesseract.exe'
+#Uncomment and add tesseract.exe to run on Windows
+#pytesseract.pytesseract.tesseract_cmd = ''
 
+# General algorithim https://medium.com/programming-fever/license-plate-recognition-using-opencv-python-7611f85cdd6c
+# This uses OpenCV/Numpy to locate the license plate in the image (with my own enhancements to the general algorithim)
+# It lastly uses Tesseract to convert the letters/matrix into actual characters in a string
 
 def get_plate_from_image(img):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -15,7 +19,6 @@ def get_plate_from_image(img):
     #if len(sys.argv) > 1:
     #    cv2.imshow("a", contrast)
     #    cv2.waitKey(1000)
-    # General algorithim https://medium.com/programming-fever/license-plate-recognition-using-opencv-python-7611f85cdd6c
     cnts = cv2.findContours(contrast.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     cnts = imutils.grab_contours(cnts)
     cnts = sorted(cnts, key = cv2.contourArea, reverse = True)[:10]
