@@ -2,7 +2,6 @@ import sys, requests, json, re
 from datetime import date
 
 class Car:
-
     def __init__(self, id: str, is_electric: bool = False, is_new: bool = False):
         self._is_electric = is_electric
         if (is_electric):
@@ -21,7 +20,7 @@ class Car:
         self._torque          = data['torque']
         self._horsepower      = data['horsepower']
         self._acceleration    = data['acceleration']
-        self._fuel_capacity   = data['fuel_capacity']
+        self._range           = data['range']
         self._city_mileage    = data['city_mileage']
         self._highway_mileage = data['highway_mileage']
         self._image           = data['image']
@@ -33,6 +32,12 @@ class Car:
     def get_gas_data(self, vin: str):
         data = self.fetch_carxse(vin)
         data.update(self.fetch_carqueryapi(data['attributes']['make'], data['attributes']['model'], data['attributes']['year'], data['attributes']['trim']))
+        city_mileage    = float(data['attributes']['city_mileage'].split(' ', 1)[0])
+        highway_mileage = float(data['attributes']['highway_mileage'].split(' ', 1)[0])
+        #45% highway 55% city
+        average_mileage = 1 / (.55 * (1 / city_mileage) + .45 * (1 / highway_mileage))
+        range = average_mileage * float(data['attributes']['fuel_capacity'].split(' ', 1)[0])
+        range_units = data['attributes']['city_mileage'].split(' ', 1)[1].split('/', 1)[0]
         return {
             'make'              : data['attributes']['make'],
             'model'             : data['attributes']['model'],
@@ -61,16 +66,16 @@ class Car:
                 'number'    : float(data['model_0_to_100_kph']),
                 'units'     : '100 km/h/s'
             },
-            'fuel_capacity'     : {
-                'number'    : float(data['attributes']['fuel_capacity'].split(' ', 1)[0]),
-                'units'     : str(data['attributes']['fuel_capacity'].split(' ', 1)[1])
+            'range'     : {
+                'number'    : range,
+                'units'     : range_units
             },
             'city_mileage'      : {
-                'number'    : float(data['attributes']['city_mileage'].split(' ', 1)[0]),
+                'number'    : city_mileage,
                 'units'     : str(data['attributes']['city_mileage'].split(' ', 1)[1])
             },
             'highway_mileage'   : {
-                'number'    : float(data['attributes']['highway_mileage'].split(' ', 1)[0]),
+                'number'    : highway_mileage,
                 'units'     : str(data['attributes']['highway_mileage'].split(' ', 1)[1])
             },
             'image'             : Car.fetch_image(data['attributes']['make'], data['attributes']['model'])
@@ -106,9 +111,9 @@ class Car:
                 'number'    : float(data['Avg Acceleration']),
                 'units'     : '60 miles/h/s'
             },
-            'fuel_capacity'     : {
+            'range'     : {
                 'number'    : float(data['Mean Range']),
-                'units'     : ''
+                'units'     : 'miles'
             },
             'city_mileage'      : {
                 'number'    : float(data['MPGeCity']),
@@ -123,56 +128,31 @@ class Car:
 
     def compare(self, other):
         return {
-            'images'           : {
-                'car 1'  : self._image,
-                'car 2'  : self._image
-            },
-            'price'           : {
-                'car 1'  : self._price['number'],
-                'car 2'  : other._price['number'],
-                'change' : self.calculate_percent_change(other._price['number'], self._price['number']),
-            },
-            'top_speed'       : {
-                'car 1'  : self._top_speed['number'],
-                'car 2'  : other._top_speed['number'],
-                'change' : self.calculate_percent_change(other._top_speed['number'], self._top_speed['number']),
-            },
-            'torque'          : {
-                'car 1'  : self._torque['number'],
-                'car 2'  : other._torque['number'],
-                'change' : self.calculate_percent_change(other._torque['number'], self._torque['number']),
-            },
-            'horsepower'      : {
-                'car 1'  : self._horsepower['number'],
-                'car 2'  : other._horsepower['number'],
-                'change' : self.calculate_percent_change(other._horsepower['number'], self._horsepower['number']),
-            },
-            'acceleration'    : {
-                'car 1'  : self._acceleration['number'],
-                'car 2'  : other._acceleration['number'],
-                'change' : self.calculate_percent_change(other._acceleration['number'], self._acceleration['number']),
-            },
-            'fuel_capacity'   : {
-                'car 1'  : self._fuel_capacity['number'],
-                'car 2'  : other._fuel_capacity['number'],
-                'change' : self.calculate_percent_change(other._fuel_capacity['number'], self._fuel_capacity['number']),
-            },
-            'city_mileage'    : {
-                'car 1'  : self._city_mileage['number'],
-                'car 2'  : other._city_mileage['number'],
-                'change' : self.calculate_percent_change(other._city_mileage['number'], self._city_mileage['number']),
-            },
-            'highway_mileage' : {
-                'car 1'  : self._highway_mileage['number'],
-                'car 2'  : other._highway_mileage['number'],
-                'change' : self.calculate_percent_change(other._highway_mileage['number'], self._highway_mileage['number']),
-            }
+            'price'           : self.calculate_percent_change(other._price['number'], self._price['number']),
+            'top_speed'       : self.calculate_percent_change(other._top_speed['number'], self._top_speed['number']),
+            'torque'          : self.calculate_percent_change(other._torque['number'], self._torque['number']),
+            'horsepower'      : self.calculate_percent_change(other._horsepower['number'], self._horsepower['number']),
+            'acceleration'    : self.calculate_percent_change(other._acceleration['number'], self._acceleration['number']),
+            'range'           : self.calculate_percent_change(other._range['number'], self._range['number']),
+            'car2'            : other._city_mileage['number'],
+            'city_mileage'    : self.calculate_percent_change(other._city_mileage['number'], self._city_mileage['number']),
+            'highway_mileage' : self.calculate_percent_change(other._highway_mileage['number'], self._highway_mileage['number']),
         }
+
+    def get_all_comparision(self, other):
+        return {
+            "car1"      : self.get_dict(),
+            "car2"      : other.get_dict(),
+            comparision : self.comapre(other)
+        }
+
+    def find_similar(self):
+         pass
 
     @staticmethod
     def fetch_carxse(vin: str):
         url = 'https://storage.googleapis.com/car-switch/respoonse.json'
-        #url =  f'https://api.carsxe.com/specs?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&vin={vin}
+        #url =  f'https://api.carsxe.com/specs?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&vin={vin}'
         r = requests.get(url)
         return json.loads(r.text)
 
@@ -188,9 +168,10 @@ class Car:
 
     @staticmethod
     def fetch_image(make: str, model: str):
-        url = f"http://api.carsxe.com/images?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&make={make}&model={model}"
-        r = requests.get(url)
-        return json.loads(r.text)["images"][0]["link"]
+        # url = f"http://api.carsxe.com/images?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&make={make}&model={model}"
+        return 'https://media.cntraveler.com/photos/57fea9ec8584f8cd20e65f15/16:9/w_1600%2Cc_limit/Aerial-One%26OnlyReethiRah-Maldives-CRHotel.jpg'
+        # r = requests.get(url)
+        # return json.loads(r.text)["images"][0]["link"]
 
     @staticmethod
     def fuzzy_string_match(str1: str, str2: str):
@@ -202,6 +183,29 @@ class Car:
     @staticmethod
     def calculate_percent_change(x: float,y: float):
         return 100*(1-x/y)
+
+    def get_dict(self):
+        return {
+            "make"            : self._make,
+            "model"           : self._model,
+            "year"            : self._year,
+            "trim"            : self._trim,
+            "style"           : self._style,
+            "type"            : self._type,
+            "fuel_type"       : self._fuel_type,
+            "price"           : self._price,
+            "top_speed"       : self._top_speed,
+            "torque"          : self._torque,
+            "horsepower"      : self._horsepower,
+            "acceleration"    : self._acceleration,
+            "range"           : self._range,
+            "city_mileage"    : self._city_mileage,
+            "highway_mileage" : self._highway_mileage,
+            "image"           : self._image,
+        }
+
+    def get_JSON(self):
+        return json.dumps(self.get_dict())
 
     def __str__(self):
          return f'''
@@ -218,7 +222,7 @@ Top Speed: {self._top_speed['number']} ({self._top_speed['units']})
 Torque: {self._torque['number']} ({self._torque['units']})
 Horsepower: {self._horsepower['number']} ({self._horsepower['units']})
 Acceleration: {self._acceleration['number']} ({self._acceleration['units']})
-Fuel Capacity: {self._fuel_capacity['number']} ({self._fuel_capacity['units']})
+Range: {self._range['number']} ({self._range['units']})
 City Mileage: {self._city_mileage['number']} ({self._city_mileage['units']})
 Highway Mileage: {self._highway_mileage['number']} ({self._highway_mileage['units']})
 '''
