@@ -16,7 +16,7 @@ class Car:
         self._type            = data['type']
         self._fuel_type       = data['fuel_type']
         self._price           = data['price']
-        self._msrp            = data['price']
+        self._msrp            = data['price'].copy()
         self._top_speed       = data['top_speed']
         self._torque          = data['torque']
         self._horsepower      = data['horsepower']
@@ -206,8 +206,8 @@ class Car:
             url = f'http://api.carsxe.com/platedecoder?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&plate={vin}&state=MD&format=json'
             r = requests.get(url)
             vin = json.loads(r.text)['vin']
-        # url = 'https://storage.googleapis.com/car-switch/respoonse.json'
-        url =  f' http://api.carsxe.com/specs?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&vin={vin}'
+        #url = 'https://storage.googleapis.com/car-switch/respoonse.json'
+        url =  f'http://api.carsxe.com/specs?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&vin={vin}'
         r = requests.get(url)
         return json.loads(r.text)
 
@@ -282,6 +282,7 @@ Type: {self._type}
 Fuel Type: {self._fuel_type}
 Electric: {self._is_electric}
 Price: {self._price['number']} ({self._price['units']})
+MSRP: {self._msrp['number']} ({self._msrp['units']})
 Top Speed: {self._top_speed['number']} ({self._top_speed['units']})
 Torque: {self._torque['number']} ({self._torque['units']})
 Horsepower: {self._horsepower['number']} ({self._horsepower['units']})
