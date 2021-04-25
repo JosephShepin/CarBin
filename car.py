@@ -1,10 +1,10 @@
 import sys, requests, json, re
 from datetime import date
 
-# The car class can be constucted by vin or plate number through the uses of CarQuery and CarsXE.
-# Electric cars are also parsed through the Car class and created as Car objects
-# This file mainly uses json from Python's standard library as well as dictionaries to compile information 
+# Car class, stores all data on a particular car, queries REST API's to acquire said data, compares itself to other cars
 class Car:
+    
+    # constructor method, can receive vin or license plate as id
     def __init__(self, id: str, is_electric: bool = False, is_new: bool = False, id_is_plate: bool = False):
         self._is_electric = is_electric
         if (is_electric):
@@ -32,13 +32,12 @@ class Car:
         if not is_new:
                 self._price['number'] *= .86 ** (date.today().year - self._year)
 
-
+    # process data returned from REST API query for user's car, gives data to constructor
     def get_gas_data(self, vin: str, is_plate: bool = False):
         data = Car.fetch_carxse(vin, is_plate)
         data.update(self.fetch_carqueryapi(data['attributes']['make'], data['attributes']['model'], data['attributes']['year'], data['attributes']['trim']))
         city_mileage    = float(data['attributes']['city_mileage'].split(' ', 1)[0])
         highway_mileage = float(data['attributes']['highway_mileage'].split(' ', 1)[0])
-        #45% highway 55% city
         average_mileage = 1 / (.55 * (1 / city_mileage) + .45 * (1 / highway_mileage))
         range = average_mileage * float(data['attributes']['fuel_capacity'].split(' ', 1)[0])
         range_units = data['attributes']['city_mileage'].split(' ', 1)[1].split('/', 1)[0]
@@ -85,6 +84,7 @@ class Car:
             'image'             : Car.fetch_image(data['attributes']['make'], data['attributes']['model'])
         }
 
+    # load data on electric cars from electric-cars.json, processes data and gives to constructor
     def get_electric_data(self, num: str):
         data = json.loads(open('electric-cars.json','r').read())['Electric Cars'][num]
         return {
@@ -130,6 +130,7 @@ class Car:
             'image'             : data['Image']
         }
 
+    # compares this car to another given car
     def compare(self, other):
         return {
             'price'           : self.calculate_percent_change(other._price['number'], self._price['number']),
@@ -142,6 +143,7 @@ class Car:
             'highway_mileage' : self.calculate_percent_change(other._highway_mileage['number'], self._highway_mileage['number']),
         }
 
+    # selects car most similiar to self from array of cars
     def find_similar(self, other_cars : list):
         similar = other_cars[0]
         for car in other_cars:
@@ -153,9 +155,11 @@ class Car:
                 similar = car
         return similar
 
+    # calculate car mileage
     def calculate_average_mileage(self):
         return 1 / (.55 * (1 / self._city_mileage['number']) + .45 * (1 / self._highway_mileage['number']))
 
+    # calculate car emissions
     def calculate_emissions(self):
         emission = 0
         if self._is_electric:
@@ -167,6 +171,7 @@ class Car:
             'units'  : 'kilogram/kilometer'
         }
 
+    # calculate annual cost
     def calculate_annual_cost(self):
         cost = 0
         if self._is_electric:
@@ -178,6 +183,7 @@ class Car:
             'units'  : 'kilogram'
         }
 
+    # calculate data for emissions over time graph
     def get_emissions_over_time(self, years, is_new = True):
         emission = 0.0
         if is_new:
@@ -192,6 +198,7 @@ class Car:
             emission += emission_change
         return emissions_over_time
 
+    # calculate data for cost over time graph
     def get_cost_over_time(self, years, is_new = True):
         cost = 0.0
         if is_new:
@@ -204,6 +211,7 @@ class Car:
             cost += cost_change
         return costs_over_time
 
+    # fetch data from CarsXE REST API with either vin or license number
     @staticmethod
     def fetch_carxse(vin: str, is_plate: bool = False):
         if is_plate:
@@ -216,6 +224,7 @@ class Car:
         r = requests.get(url)
         return json.loads(r.text)
 
+    # fetch additional data from CarQuery REST API
     @staticmethod
     def fetch_carqueryapi(make: str, model: str, year: str, trim: str):
         url = f'https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getTrims&make={make}&year={year}'
@@ -226,6 +235,7 @@ class Car:
                 return entry
         return {}
 
+    # fetch image of car from CarsXE
     @staticmethod
     def fetch_image(make: str, model: str):
         # url = f"http://api.carsxe.com/images?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&make={make}&model={model}&angle=front"
@@ -233,6 +243,7 @@ class Car:
         r = requests.get(url)
         return json.loads(r.text)["images"][0]["link"]
 
+    # helper method for fuzzy string match
     @staticmethod
     def fuzzy_string_match(str1: str, str2: str):
         not_word_pattern = re.compile('\W')
@@ -240,6 +251,7 @@ class Car:
         str2 = re.sub(not_word_pattern, '', str2)
         return str1.lower() == str2.lower()
 
+    # helper method to calculate percent change
     @staticmethod
     def calculate_percent_change(x: float,y: float):
         if y != 0.0:
@@ -247,14 +259,17 @@ class Car:
         else:
             return 0.0
 
+    # method to convert metric newtonmeters to imperial footpounds
     @staticmethod
     def newton_meters_to_foot_pounds(nm: float):
         return nm * 0.73756
 
+    # method to convert metric kilometers/hour to imperial miles/hour
     @staticmethod
     def kilometers_per_hour_to_miles_per_hour(kmph: float):
         return kmph * 0.6213712
 
+    # return all car data as python dictionary, to be converted to JSON
     def get_dict(self):
         return {
             "make"            : self._make,
@@ -276,9 +291,11 @@ class Car:
             "image"           : self._image,
         }
 
+    # return all car data as JSON string
     def get_JSON(self):
         return json.dumps(self.get_dict()).replace('_', '')
 
+    # tostring method for debugging
     def __str__(self):
          return f'''
 Make: {self._make}
@@ -300,6 +317,7 @@ City Mileage: {self._city_mileage['number']} ({self._city_mileage['units']})
 Highway Mileage: {self._highway_mileage['number']} ({self._highway_mileage['units']})
 '''
 
+# for debugging
 if __name__ == '__main__':
     if (len(sys.argv) < 2):
         print(f'Usage: {sys.argv[0]} [Your VIN] [Compare Electric Car ID]')
