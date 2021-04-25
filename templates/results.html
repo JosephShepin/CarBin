@@ -193,6 +193,7 @@
     addToTemplate("$" + Math.round(c1.price.number), c1.price.units)
     addToTemplate(Math.round(c1.range.number), c1.range.units + " range")
     addToTemplate(Math.round(c1.torque.number), c1.torque.units)
+    addToTemplate(Math.round(c1.top_speed), c1.top_speed.units)
 
     $('.yourCarSpecs').append(totalData);
 
@@ -201,7 +202,6 @@
     addToTemplate("$" + Math.round(c2.price.number), c2.price.units)
     addToTemplate(Math.round(c2.range.number), c2.range.units + " range")
     addToTemplate(Math.round(c2.torque.number), c2.torque.units)
-
 
     $('.recommendedCarSpecs').append(totalData);
 

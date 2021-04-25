@@ -25,8 +25,8 @@ class Car:
         self._highway_mileage = data['highway_mileage']
         self._image           = data['image']
 
-        if not is_new:
-                self._price['number'] *= self._price['number'] * .86 ** (date.today().year - self._year)
+        #if not is_new:
+        #        self._price['number'] *= .86 ** (date.today().year - self._year)
 
 
     def get_gas_data(self, vin: str):
@@ -154,14 +154,22 @@ class Car:
                         similar = car
             elif abs(car._price - self._type) < abs(similar._price - self._type):
                 similar = car
+        return similar
 
+    def calculate_average_mileage(self):
+        return 1 / (.55 * (1 / self._city_mileage) + .45 * (1 / self._highway_mileage))
 
     def calculate_emissions(self):
         if is_electric:
             return 0.0
         else:
-            average_mileage = 1 / (.55 * (1 / self._city_mileage) + .45 * (1 / self._highway_mileage))
-            return 5.4805 / average_mileage
+            return 5.4805 / calculate_average_mileage()
+
+    def calculate_annual_cost(self):
+        if is_electric:
+            return 0.0
+        else:
+            return 40500 / calculate_average_mileage()
 
     @staticmethod
     def fetch_carxse(vin: str):
