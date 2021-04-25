@@ -1,7 +1,7 @@
 
 import cv2, imutils, pytesseract, sys
 import numpy as np
-pytesseract.pytesseract.tesseract_cmd = 'D:/iyadh/AppData/Local/Programs/Tesseract-OCR/tesseract.exe'
+#pytesseract.pytesseract.tesseract_cmd = 'D:/iyadh/AppData/Local/Programs/Tesseract-OCR/tesseract.exe'
 
 def get_plate_from_image(img):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
