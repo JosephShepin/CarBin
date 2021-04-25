@@ -21,7 +21,7 @@ class Car:
         self._torque          = data['torque']
         self._horsepower      = data['horsepower']
         self._acceleration    = data['acceleration']
-        self._fuel_capacity   = data['fuel_capacity']
+        self._range           = data['range']
         self._city_mileage    = data['city_mileage']
         self._highway_mileage = data['highway_mileage']
         self._image           = data['image']
@@ -33,6 +33,12 @@ class Car:
     def get_gas_data(self, vin: str):
         data = self.fetch_carxse(vin)
         data.update(self.fetch_carqueryapi(data['attributes']['make'], data['attributes']['model'], data['attributes']['year'], data['attributes']['trim']))
+        city_mileage    = float(data['attributes']['city_mileage'].split(' ', 1)[0])
+        highway_mileage = float(data['attributes']['highway_mileage'].split(' ', 1)[0])
+        #45% highway 55% city
+        average_mileage = 1 / (.55 * (1 / city_mileage) + .45 * (1 / highway_mileage))
+        range = average_mileage * float(data['attributes']['fuel_capacity'].split(' ', 1)[0])
+        range_units = data['attributes']['city_mileage'].split(' ', 1)[1].split('/', 1)[0]
         return {
             'make'              : data['attributes']['make'],
             'model'             : data['attributes']['model'],
@@ -61,16 +67,16 @@ class Car:
                 'number'    : float(data['model_0_to_100_kph']),
                 'units'     : '100 km/h/s'
             },
-            'fuel_capacity'     : {
-                'number'    : float(data['attributes']['fuel_capacity'].split(' ', 1)[0]),
-                'units'     : str(data['attributes']['fuel_capacity'].split(' ', 1)[1])
+            'range'     : {
+                'number'    : range,
+                'units'     : range_units
             },
             'city_mileage'      : {
-                'number'    : float(data['attributes']['city_mileage'].split(' ', 1)[0]),
+                'number'    : city_mileage,
                 'units'     : str(data['attributes']['city_mileage'].split(' ', 1)[1])
             },
             'highway_mileage'   : {
-                'number'    : float(data['attributes']['highway_mileage'].split(' ', 1)[0]),
+                'number'    : highway_mileage,
                 'units'     : str(data['attributes']['highway_mileage'].split(' ', 1)[1])
             },
             'image'             : Car.fetch_image(data['attributes']['make'], data['attributes']['model'])
@@ -106,9 +112,9 @@ class Car:
                 'number'    : float(data['Avg Acceleration']),
                 'units'     : '60 miles/h/s'
             },
-            'fuel_capacity'     : {
+            'range'     : {
                 'number'    : float(data['Mean Range']),
-                'units'     : ''
+                'units'     : 'miles'
             },
             'city_mileage'      : {
                 'number'    : float(data['MPGeCity']),
@@ -152,10 +158,10 @@ class Car:
                 'car 2'  : other._acceleration['number'],
                 'change' : self.calculate_percent_change(other._acceleration['number'], self._acceleration['number']),
             },
-            'fuel_capacity'   : {
-                'car 1'  : self._fuel_capacity['number'],
-                'car 2'  : other._fuel_capacity['number'],
-                'change' : self.calculate_percent_change(other._fuel_capacity['number'], self._fuel_capacity['number']),
+            'range'   : {
+                'car 1'  : self._range['number'],
+                'car 2'  : other._range['number'],
+                'change' : self.calculate_percent_change(other._range['number'], self._range['number']),
             },
             'city_mileage'    : {
                 'car 1'  : self._city_mileage['number'],
@@ -218,7 +224,7 @@ Top Speed: {self._top_speed['number']} ({self._top_speed['units']})
 Torque: {self._torque['number']} ({self._torque['units']})
 Horsepower: {self._horsepower['number']} ({self._horsepower['units']})
 Acceleration: {self._acceleration['number']} ({self._acceleration['units']})
-Fuel Capacity: {self._fuel_capacity['number']} ({self._fuel_capacity['units']})
+Range: {self._range['number']} ({self._range['units']})
 City Mileage: {self._city_mileage['number']} ({self._city_mileage['units']})
 Highway Mileage: {self._highway_mileage['number']} ({self._highway_mileage['units']})
 '''
