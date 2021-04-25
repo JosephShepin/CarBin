@@ -151,8 +151,8 @@ class Car:
 
     @staticmethod
     def fetch_carxse(vin: str):
-        #url = 'https://storage.googleapis.com/car-switch/respoonse.json'
-        url =  f'https://api.carsxe.com/specs?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&vin={vin}'
+        url = 'https://storage.googleapis.com/car-switch/respoonse.json'
+        #url =  f'https://api.carsxe.com/specs?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&vin={vin}'
         r = requests.get(url)
         return json.loads(r.text)
 
