@@ -154,6 +154,7 @@ class Car:
                         similar = car
             elif abs(car._price - self._type) < abs(similar._price - self._type):
                 similar = car
+        return similar
 
     def calculate_average_mileage(self):
         return 1 / (.55 * (1 / self._city_mileage) + .45 * (1 / self._highway_mileage))
