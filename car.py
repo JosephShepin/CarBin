@@ -30,7 +30,7 @@ class Car:
 
 
     def get_gas_data(self, vin: str):
-        data = self.fetch_carxse(vin)
+        data = Car.fetch_carxse(vin)
         data.update(self.fetch_carqueryapi(data['attributes']['make'], data['attributes']['model'], data['attributes']['year'], data['attributes']['trim']))
         city_mileage    = float(data['attributes']['city_mileage'].split(' ', 1)[0])
         highway_mileage = float(data['attributes']['highway_mileage'].split(' ', 1)[0])
@@ -134,7 +134,6 @@ class Car:
             'horsepower'      : self.calculate_percent_change(other._horsepower['number'], self._horsepower['number']),
             'acceleration'    : self.calculate_percent_change(other._acceleration['number'], self._acceleration['number']),
             'range'           : self.calculate_percent_change(other._range['number'], self._range['number']),
-            'car2'            : other._city_mileage['number'],
             'city_mileage'    : self.calculate_percent_change(other._city_mileage['number'], self._city_mileage['number']),
             'highway_mileage' : self.calculate_percent_change(other._highway_mileage['number'], self._highway_mileage['number']),
         }
@@ -146,13 +145,28 @@ class Car:
             'comparision' : self.compare(other)
         }
 
-    def find_similar(self):
-         pass
+    def find_similar(self, other_cars : list):
+        similar = other_cars[0]
+         for car in other_cars:
+             if fuzzy_string_match(self._type, similar._type):
+                 if fuzzy_string_match(self._type, car._type):
+                     if abs(car._price - self._type) < abs(similar._price - self._type):
+                         similar = car
+             elif abs(car._price - self._type) < abs(similar._price - self._type):
+                 similar = car
+
+
+    def calculate_emissions(self):
+        if is_electric:
+            return 0.0
+        else:
+            average_mileage = 1 / (.55 * (1 / self._city_mileage) + .45 * (1 / self._highway_mileage))
+            return 5.4805 / average_mileage
 
     @staticmethod
     def fetch_carxse(vin: str):
         url = 'https://storage.googleapis.com/car-switch/respoonse.json'
-        #url =  f'https://api.carsxe.com/specs?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&vin={vin}'
+        #url =  f' http://api.carsxe.com/specs?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&vin={vin}'
         r = requests.get(url)
         return json.loads(r.text)
 

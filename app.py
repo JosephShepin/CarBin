@@ -22,6 +22,8 @@ def postData():
 
     #return render_template('results.html',results=car)
     #return render_template('results.html',results=json.dumps(car.get_all_comparison(Car('0', True))))
+    car = Car(vin).get_all_comparison(Car('0', True))
+    return render_template('results.html',results=json.dumps(car))
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
