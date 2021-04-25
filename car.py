@@ -154,7 +154,7 @@ class Car:
 
     def calculate_emissions(self):
         emission = 0
-        if self.is_electric:
+        if self._is_electric:
             emission = 13.76 / calculate_average_mileage()
         else:
             emission = 5.4805 / calculate_average_mileage()
