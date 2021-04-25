@@ -141,9 +141,9 @@ class Car:
 
     def get_all_comparision(self, other):
         return {
-            "car1"      : self.get_dict(),
-            "car2"      : other.get_dict(),
-            comparision : self.comapre(other)
+            'car1'        : self.get_dict(),
+            'car2'        : other.get_dict(),
+            'comparision' : self.comapre(other)
         }
 
     def find_similar(self):
