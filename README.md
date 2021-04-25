@@ -23,6 +23,7 @@ Thanks 3rd-parties!
  - JQuery
  - Bootstrap CDN
 - Chart.js and [example code](https://www.chartjs.org/docs/latest/samples/bar/vertical.html)
+- 
 Obligatory thanks for the help!
  - StackOverflow
  - Medium
