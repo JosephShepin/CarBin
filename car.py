@@ -227,7 +227,7 @@ class Car:
         }
 
     def get_JSON(self):
-        return json.dumps(self.get_dict())
+        return json.dumps(self.get_dict()).replace('_', '')
 
     def __str__(self):
          return f'''
