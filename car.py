@@ -206,8 +206,8 @@ class Car:
             url = f'http://api.carsxe.com/platedecoder?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&plate={vin}&state=MD&format=json'
             r = requests.get(url)
             vin = json.loads(r.text)['vin']
-        url = 'https://storage.googleapis.com/car-switch/respoonse.json'
-        # url =  f' http://api.carsxe.com/specs?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&vin={vin}'
+        #url = 'https://storage.googleapis.com/car-switch/respoonse.json'
+        url =  f'http://api.carsxe.com/specs?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&vin={vin}'
         r = requests.get(url)
         return json.loads(r.text)
 
