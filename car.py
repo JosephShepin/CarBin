@@ -147,16 +147,6 @@ class Car:
 
     def find_similar(self, other_cars : list):
         similar = other_cars[0]
-<<<<<<< HEAD
-         for car in other_cars:
-             if fuzzy_string_match(self._type, similar._type):
-                 if fuzzy_string_match(self._type, car._type):
-                     if abs(car._price - self._type) < abs(similar._price - self._type):
-                         similar = car
-             elif abs(car._price - self._type) < abs(similar._price - self._type):
-                 similar = car
-        return similar;
-=======
         for car in other_cars:
             if fuzzy_string_match(self._type, similar._type):
                 if fuzzy_string_match(self._type, car._type):
@@ -164,7 +154,6 @@ class Car:
                         similar = car
             elif abs(car._price - self._type) < abs(similar._price - self._type):
                 similar = car
->>>>>>> 5af84d88370f19e66b43fcf48e85a5f13b463cf1
 
     def calculate_average_mileage(self):
         return 1 / (.55 * (1 / self._city_mileage) + .45 * (1 / self._highway_mileage))
@@ -177,7 +166,7 @@ class Car:
 
     def calculate_annual_cost(self):
         if is_electric:
-            return 0.0:
+            return 0.0
         else:
             return 40500 / calculate_average_mileage()
 
