@@ -3,6 +3,7 @@ from car import Car
 from pyzbar import pyzbar
 from PIL import Image
 import os
+import json 
 
 app = Flask(__name__)
 
@@ -17,8 +18,8 @@ def results():
 @app.route('/get_car', methods=["GET"])
 def postData():
     vin = request.args.get('vin', "")
-    car = Car(vin) 
-    return render_template('results.html',results=car)
+    car = Car(vin).compare(Car('0', True))
+    return render_template('results.html',results=json.dumps(car))
 
 
 @app.route('/upload', methods=['POST'])

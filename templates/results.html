@@ -70,7 +70,7 @@
 <body>
     <div class="container" style="text-align: center; padding-top: 30px;">
         <h1>Results</h1>
-        <p>{{results}}</p>
+        <p class="results" style="display:none;">{{results}}</p>
         <hr>
         <br>
         <div class="" style="display:flex; justify-content:flex-start;">
@@ -80,6 +80,7 @@
                 <h3 style='text-align: left' class="yourCarTitle"></h3>
                 <hr>
                 <img class="car-img yourCarImg"></img>
+                <p>Metadata</p>
             </div>
 
             <div style="flex:1; margin-right: 10px;" class="shadow-sm p-3 bg-white rounded"
@@ -161,24 +162,19 @@
     var yourCarImg = document.querySelector(".yourCarImg")
     var recommendedCarImg = document.querySelector(".recommendedCarImg")
 
+    var data = document.querySelector(".results").innerHTML
+    data  = JSON.parse(data)
+    console.log(data)
+    // console.log(data)
+    //  data = JSON.parse(myVal.replace('"', "\\\"");)
+    // console.log(data['images'])
     yourCarTitle.innerHTML = "Lexus RX-350 xx"
     recommendedCarTitle.innerHTML = "Tesla Model Y xx"
-    yourCarImg.src = "https://pictures.topspeed.com/IMG/crop/201801/quick-specs-2017-lex-44_1600x0w.jpg"
-    recommendedCarImg.src = "https://cdn.motor1.com/images/mgl/kjLpP/s1/ford-mustang-mach-e-debuts-in-europe.jpg"
+    // yourCarImg.src = "https://pictures.topspeed.com/IMG/crop/201801/quick-specs-2017-lex-44_1600x0w.jpg"
+    yourCarImg.src = data.images.car1
+    // recommendedCarImg.src = "https://cdn.motor1.com/images/mgl/kjLpP/s1/ford-mustang-mach-e-debuts-in-europe.jpg"
+    recommendedCarImg.src = data.images.car2
 
-
-
-    var data = {
-        "price": -37.3,
-        "top_speed": 100.0,
-        "torque": 100.0,
-        "horsepower": 100.0,
-        "acceleration": 42.68,
-        "fuel_capacity": 100.0,
-        "city_mileage": -372.22,
-        "highway_mileage": -188.0
-    }
-    
 
 
     function animate(circle, percent, start, end) {
