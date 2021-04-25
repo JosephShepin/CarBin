@@ -182,28 +182,29 @@
     var template = `<p style="text-align: left; padding-top:10px" class=""></p>`
     var totalData = ``
 
-    function addToTemplate(s) {
-        totalData += `<p style="text-align: left;">${s}</p>`
+    function addToTemplate(s, units) {
+        totalData +=
+            `<div style="text-align: left; padding-left: 10px;"><p style="font-size:20px; text-align: left; display: inline-block">${s}</p><p style=" text-align: left; padding-left: 4px; font-size:15px; font-weight:bold;  display: inline-block">${units}</p></div>`
     }
 
     var c1 = data.car1
     var c2 = data.car2
 
-    addToTemplate(Math.round(c1.price.number) + " " + c1.price.units)
-    addToTemplate(Math.round(c1.range.number) + " " + c1.range.units)
-    addToTemplate(Math.round(c1.torque.number) + " " + c1.torque.units)
+    addToTemplate("$" + Math.round(c1.price.number), c1.price.units)
+    addToTemplate(Math.round(c1.range.number), c1.range.units + " range")
+    addToTemplate(Math.round(c1.torque.number), c1.torque.units)
 
     $('.yourCarSpecs').append(totalData);
 
-    template = `<p style="text-align: left; padding-top:10px" class=""></p>`
     totalData = ``
 
-    addToTemplate(Math.round(c2.price.number) + " " + c2.price.units)
-    addToTemplate(Math.round(c2.range.number) + " " + c2.range.units)
-    addToTemplate(Math.round(c2.torque.number) + " " + c2.torque.units)
+    addToTemplate("$" + Math.round(c2.price.number), c2.price.units)
+    addToTemplate(Math.round(c2.range.number), c2.range.units + " range")
+    addToTemplate(Math.round(c2.torque.number), c2.torque.units)
 
 
     $('.recommendedCarSpecs').append(totalData);
+
     function animate(circle, percent, start, end) {
         circle.animate(percent, {
             from: {

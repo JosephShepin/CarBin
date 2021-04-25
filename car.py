@@ -147,13 +147,13 @@ class Car:
 
     def find_similar(self, other_cars : list):
         similar = other_cars[0]
-         for car in other_cars:
-             if fuzzy_string_match(self._type, similar._type):
-                 if fuzzy_string_match(self._type, car._type):
-                     if abs(car._price - self._type) < abs(similar._price - self._type):
-                         similar = car
-             elif abs(car._price - self._type) < abs(similar._price - self._type):
-                 similar = car
+        for car in other_cars:
+            if fuzzy_string_match(self._type, similar._type):
+                if fuzzy_string_match(self._type, car._type):
+                    if abs(car._price - self._type) < abs(similar._price - self._type):
+                        similar = car
+            elif abs(car._price - self._type) < abs(similar._price - self._type):
+                similar = car
 
 
     def calculate_emissions(self):
