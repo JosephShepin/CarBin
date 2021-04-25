@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, make_response, request
+from flask import Flask, render_template, request, redirect
 from car import Car
 from pyzbar import pyzbar
 from PIL import Image
