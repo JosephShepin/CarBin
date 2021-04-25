@@ -193,7 +193,7 @@ class Car:
         cost = 0.0
         if is_new:
             cost = self._price['number']
-        cost_change = self.calculate_annual_cost()['number']
+        cost_change = self.calculate_annual_cost()['number'] + (13500 * .09)
         costs_over_time = {}
         for i in range(years):
             costs_over_time[str(date.today().year + i)] = cost
