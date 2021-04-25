@@ -50,7 +50,8 @@ def get_plate_from_image(img):
     return text
 
 def get_plate_from_path(path: str):
-    return get_plate_from_image(cv2.imread(path))
+    img = cv2.imread(path)
+    return get_plate_from_image(img)
 
 if __name__ == '__main__':
     if len(sys.argv) < 1:
