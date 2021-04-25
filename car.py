@@ -165,7 +165,7 @@ class Car:
 
     def calculate_annual_cost(self):
         cost = 0
-        if self.is_electric:
+        if self._is_electric:
             cost = 57915 / calculate_average_mileage()
         else:
             cost = 40500 / calculate_average_mileage()
