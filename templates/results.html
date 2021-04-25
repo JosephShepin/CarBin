@@ -152,10 +152,9 @@
     var electricCars = JSON.parse(document.querySelector(".electricCars").innerHTML)
     var electricCarComparisons = JSON.parse(document.querySelector(".electricCarComparisons").innerHTML)
 
-    function addToTemplate(s, units) {
+    function addToTemplate(s, units, percent) {
         totalData +=
-        
-            `<div><div style="text-align: left; padding-left: 10px; margin-top: -10px"><p style="font-size:20px; text-align: left; display: inline-block">${s}</p><p style=" text-align: left; padding-left: 4px; font-size:15px; font-weight:bold;  display: inline-block">${units}</p></div></div>`
+            `<div><div style="text-align: left; padding-left: 10px; margin-top: -10px"><p style="font-size:20px; text-align: left; display: inline-block">${s}</p><p style=" text-align: left; padding-left: 4px; font-size:15px; font-weight:bold;  display: inline-block">${units}</p><p style="display: inline-block; padding-left: 10px; color:${percent > 0 ? red : green}">${percent == "" ? "" :Math.round(percent*10)/10}${percent == "" ? "" : "%"}</p></div></div>`
     }
 
     function addCommas(x) {
@@ -163,37 +162,38 @@
     }
 
     function setIndex(i) {
+        var comp = electricCarComparisons.ElectricCarComparisons[i]
         totalData = ``
         var recoCar = electricCars.ElectricCars[i]
         document.querySelector("#dropdownMenuButton").innerHTML = recoCar.make + " " + recoCar.model
-        console.log(electricCars)
         yourCarTitle.innerHTML = userCar.make + " " + userCar.model
         recommendedCarTitle.innerHTML = recoCar.make + " " + recoCar.model
 
         yourCarImg.src = userCar.image
         recommendedCarImg.src = recoCar.image
 
-        console.log(electricCars)
+        
+
         var c1 = userCar
         var c2 = electricCars.ElectricCars[i]
 
-        addToTemplate("Year ", Math.round(c1.year))
-        addToTemplate("$" + addCommas(Math.round(c1.price.number)), c1.price.units)
-        addToTemplate(Math.round(c1.range.number), c1.range.units + " range")
-        addToTemplate(Math.round(c1.torque.number), c1.torque.units)
-        addToTemplate(Math.round(c1.topspeed.number), c1.topspeed.units)
-        addToTemplate(Math.round(c1.horsepower.number), c1.horsepower.units)
+        addToTemplate("Year ", Math.round(c1.year),"")
+        addToTemplate("$" + addCommas(Math.round(c1.price.number)),c1.price.units,"")
+        addToTemplate(Math.round(c1.range.number), c1.range.units + " range","")
+        addToTemplate(Math.round(c1.torque.number), c1.torque.units,"")
+        // addToTemplate(Math.round(c1.topspeed.number), c1.topspeed.units)
+        addToTemplate(Math.round(c1.horsepower.number), c1.horsepower.units,"")
         // addToTemplate(Math.round(c1.topspeed.number),c1.topspeed.units + " Top Speed")
         $('.yourCarSpecs').empty()
         $('.yourCarSpecs').append(totalData);
 
         totalData = ``
-        addToTemplate("Year ", Math.round(c2.year))
-        addToTemplate("$" + addCommas(Math.round(c2.price.number)), c2.price.units)
-        addToTemplate(Math.round(c2.range.number), c2.range.units + " of range")
-        addToTemplate(Math.round(c2.torque.number), c2.torque.units)
-        addToTemplate(Math.round(c2.topspeed.number), c2.topspeed.units)
-        addToTemplate(Math.round(c2.horsepower.number), c2.horsepower.units)
+        addToTemplate("Year ", Math.round(c2.year),"")
+        addToTemplate("$" + addCommas(Math.round(c2.price.number)), c2.price.units,comp.price)
+        addToTemplate(Math.round(c2.range.number), c2.range.units + " of range",comp.range)
+        addToTemplate(Math.round(c2.torque.number), c2.torque.units,comp.range,comp.torque)
+        // addToTemplate(Math.round(c2.topspeed.number), c2.topspeed.units)
+        addToTemplate(Math.round(c2.horsepower.number), c2.horsepower.units,comp.horsepower)
         // addToTemplate(Math.round(c2.topspeed.number),c2.topspeed.units + " Top Speed")
 
         $('.recommendedCarSpecs').empty()
