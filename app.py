@@ -12,18 +12,23 @@ def main():
 
 @app.route('/results', methods=["GET"])
 def postData():
+
     vin = request.args.get('vin', "")
     car = Car(vin) 
+
     ecars=[]
     for id_num in list(json.loads(open('electric-cars.json','r').read())['Electric Cars']):
-        ecar=Car(id_num,True)
-        ecars.append(json.loads(ecar.get_JSON()))
-    return json.dumps({'Electric Cars':ecars})
+        ecars.append(Car(id_num,True))
 
-    #return render_template('results.html',results=car)
-    #return render_template('results.html',results=json.dumps(car.get_all_comparison(Car('0', True))))
-    car = Car(vin).get_all_comparison(Car('0', True))
-    return render_template('results.html',results=json.dumps(car))
+    first=car.find_comparison(ecars)
+    ecars.remove(first)
+    ecars[:0] = [first]
+
+    jsonecars=[]
+    for ecar in ecars:
+        jsonecars.append(json.loads(ecar.get_JSON()))
+
+    return render_template('results.html',user_car=json.dumps(car),electric_cars=json.dumps({'Electric Cars':jsonecars}))
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
