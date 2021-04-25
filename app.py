@@ -14,11 +14,28 @@ def main():
 def about():
     return render_template('about.html')
 
-@app.route('/results', methods=["GET"])
-def results():
+@app.route('/plateresults', methods=["GET"])
+def plate_results():
+    plate = request.args.get('plate', "")
+    car = Car(plate,True)
+    car = json.dumps(car.get_dict())
+    return redirect(f'/results/{car}')
 
+@app.route('/vinresults', methods=["GET"])
+def vin_results():
     vin = request.args.get('vin', "")
     car = Car(vin)
+    car = json.dumps(car.get_dict())
+    return redirect(f'/results/{car}')
+
+@app.route('/pictureresults', methods=["GET"])
+def picture_results():
+    pass
+
+@app.route('/results/<car>', methods=["GET"])
+def results(car):
+
+    car=loads.json(car)
 
     ecars=[]
     for id_num in list(json.loads(open('electric-cars.json','r').read())['Electric Cars']):
