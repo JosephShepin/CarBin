@@ -30,15 +30,9 @@ def results():
         ecar_comparisons.append(car.compare(ecar))
         json_ecars.append(ecar.get_dict())
 
-<<<<<<< HEAD
     user_car_json = json.dumps(car).replace('_','')
     electric_cars_json = json.dumps({'ElectricCars':json_ecars}).replace('_','')
     electric_car_comparisons_json = json.dumps({'ElectricCarComparisons':ecar_comparisons}).replace('_','')
-=======
-    user_car_json = json.dumps(car.get_dict()).replace('_','')
-    electric_cars_json = json.dumps({'Electric Cars':json_ecars}).replace('_','')
-    electric_car_comparisons_json = json.dumps({'Electric Car Comparisons':ecar_comparisons}).replace('_','')
->>>>>>> 7b667ddb2519bbbf9c0c2702331766085c36d1fb
     return render_template('results.html',user_car=user_car_json,electric_cars=electric_cars_json,electric_car_comparisons=electric_car_comparisons_json)
 
 @app.route('/upload', methods=['POST'])
