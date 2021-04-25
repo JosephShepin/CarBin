@@ -16,6 +16,7 @@ class Car:
         self._type            = data['type']
         self._fuel_type       = data['fuel_type']
         self._price           = data['price']
+        self._msrp            = data['price']
         self._top_speed       = data['top_speed']
         self._torque          = data['torque']
         self._horsepower      = data['horsepower']
@@ -256,6 +257,7 @@ class Car:
             "type"            : self._type,
             "fuel_type"       : self._fuel_type,
             "price"           : self._price,
+            "msrp"            : self._msrp,
             "top_speed"       : self._top_speed,
             "torque"          : self._torque,
             "horsepower"      : self._horsepower,
