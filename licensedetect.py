@@ -3,6 +3,7 @@ import cv2, imutils, pytesseract, sys
 import numpy as np
 #pytesseract.pytesseract.tesseract_cmd = 'D:/iyadh/AppData/Local/Programs/Tesseract-OCR/tesseract.exe'
 
+
 def get_plate_from_image(img):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     gray = cv2.bilateralFilter(gray, 13, 15, 15)
@@ -47,6 +48,9 @@ def get_plate_from_image(img):
     ##    cv2.imshow("a", final)
     ##    cv2.waitKey(1000)
     return text
+
+def get_plate_from_path(path: str):
+    return get_plate_from_image(cv2.imread(path))
 
 if __name__ == '__main__':
     if len(sys.argv) < 1:
