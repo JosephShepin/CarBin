@@ -206,8 +206,8 @@ class Car:
             url = f'http://api.carsxe.com/platedecoder?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&plate={vin}&state=MD&format=json'
             r = requests.get(url)
             vin = json.loads(r.text)['vin']
-        url = 'https://storage.googleapis.com/car-switch/respoonse.json'
-        #url =  f' http://api.carsxe.com/specs?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&vin={vin}'
+        # url = 'https://storage.googleapis.com/car-switch/respoonse.json'
+        url =  f' http://api.carsxe.com/specs?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&vin={vin}'
         r = requests.get(url)
         return json.loads(r.text)
 
@@ -223,10 +223,10 @@ class Car:
 
     @staticmethod
     def fetch_image(make: str, model: str):
-        # url = f"http://api.carsxe.com/images?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&make={make}&model={model}"
-        return 'https://media.cntraveler.com/photos/57fea9ec8584f8cd20e65f15/16:9/w_1600%2Cc_limit/Aerial-One%26OnlyReethiRah-Maldives-CRHotel.jpg'
-        # r = requests.get(url)
-        # return json.loads(r.text)["images"][0]["link"]
+        url = f"http://api.carsxe.com/images?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&make={make}&model={model}&angle=front"
+        # return 'https://media.cntraveler.com/photos/57fea9ec8584f8cd20e65f15/16:9/w_1600%2Cc_limit/Aerial-One%26OnlyReethiRah-Maldives-CRHotel.jpg'
+        r = requests.get(url)
+        return json.loads(r.text)["images"][0]["link"]
 
     @staticmethod
     def fuzzy_string_match(str1: str, str2: str):
