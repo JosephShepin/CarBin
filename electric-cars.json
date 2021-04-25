@@ -14,7 +14,7 @@
       "Mean Torque": 372.5,
       "Mean Range": 255,
       "Year": 2021,
-      "Image": "https://cdn.motor1.com/images/mgl/kjLpP/s1/ford-mustang-mach-e-debuts-in-europe.jpg"
+      "Image": "https://storage.googleapis.com/car-switch/electric-cars/ford-mustang-mach-e-debuts-in-europe.jpg"
     },
     "1": {
       "Make": "Volvo",
@@ -30,7 +30,7 @@
       "Mean Torque": 486,
       "Mean Range": 208,
       "Year": 2021,
-      "Image": "https://d3lp4xedbqa8a5.cloudfront.net/s3/digital-cougar-assets/whichcar/2020/07/08/-1/volvo-xc40-2.jpg"
+      "Image": "https://storage.googleapis.com/car-switch/electric-cars/volvo-xc40-2.jpg"
     },
     "2": {
       "Make": "Kia",
@@ -46,7 +46,7 @@
       "Mean Torque": 291,
       "Mean Range": 239,
       "Year": 2020,
-      "Image": "https://www.carscoops.com/wp-content/uploads/2019/02/aec42197-2019-kia-niro-ev.jpg"
+      "Image": "https://storage.googleapis.com/car-switch/electric-cars/aec42197-2019-kia-niro-ev.jpg"
     },
     "3": {
       "Make": "Audi",
@@ -62,7 +62,7 @@
       "Mean Torque": 490,
       "Mean Range": 222,
       "Year": 2021,
-      "Image": "https://www.carscoops.com/wp-content/uploads/2019/11/2020-Audi-E-Tron-Sportback.jpg"
+      "Image": "https://storage.googleapis.com/car-switch/electric-cars/2020-Audi-E-Tron-Sportback.jpg"
     },
     "4": {
       "Make": "Tesla",
@@ -110,7 +110,7 @@
       "Mean Torque": 291,
       "Mean Range": 258,
       "Year": 2021,
-      "Image": "https://media.ed.edmunds-media.com/hyundai/kona-electric/2019/oem/2019_hyundai_kona-electric_4dr-suv_ultimate_fq_oem_1_1600.jpg"
+      "Image": "https://storage.googleapis.com/car-switch/electric-cars/hyundai-kona-electric_100781764.jpg"
     },
     "7": {
       "Make": "Tesla",
@@ -174,7 +174,7 @@
       "Mean Torque": 229,
       "Mean Range": 250,
       "Year": 2021,
-      "Image": "https://www.automobilemag.com/uploads/sites/11/2020/09/2021-Volkswagen-ID4-47.jpg"
+      "Image": "https://storage.googleapis.com/car-switch/electric-cars/volkswagen-id-4-official-pictures.jpg"
     },
     "11": {
       "Make": "Hyundai",
@@ -190,7 +190,7 @@
       "Mean Torque": 218,
       "Mean Range": 170,
       "Year": 2021,
-      "Image": "https://www.motorbiscuit.com/wp-content/uploads/2020/11/2021-Hyundai-Ioniq-EV-1024x683.jpg"
+      "Image": "https://storage.googleapis.com/car-switch/electric-cars/2021-Hyundai-Ioniq-EV-1024x683.jpg"
     },
     "12": {
       "Make": "Nissan",
@@ -206,7 +206,7 @@
       "Mean Torque": 243,
       "Mean Range": 376,
       "Year": 2021,
-      "Image": "https://smartcdn.prod.postmedia.digital/driving/wp-content/uploads/2018/03/2017nic160001_1280_01.png"
+      "Image": "https://storage.googleapis.com/car-switch/electric-cars/Nissan_Leaf_2018_(31874639158)_(cropped).jpg"
     },
     "13": {
       "Make": "Porshe",
@@ -222,7 +222,7 @@
       "Mean Torque": 221,
       "Mean Range": 227,
       "Year": 2021,
-      "Image": "https://smartcdn.prod.postmedia.digital/driving/wp-content/uploads/2019/12/s19_6481_fine.jpg?quality=100&strip=all"
+      "Image": "https://storage.googleapis.com/car-switch/electric-cars/2020-porsche-taycan-4s-106-1576001334.jpg"
     },
     "14": {
       "Make": "Polestar",
@@ -238,7 +238,7 @@
       "Mean Torque": 487,
       "Mean Range": 260,
       "Year": 2021,
-      "Image": "https://www.topgear.com/sites/default/files/styles/16x9_1280w/public/cars-car/image/2020/07/polestar2_performance_hde_magnesium_015.jpg?itok=VGkYMp16"
+      "Image": "https://storage.googleapis.com/car-switch/electric-cars/polestar2_performance_hde_magnesium_015.jpg"
     }
   }
 }

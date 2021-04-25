@@ -40,7 +40,9 @@
 <body>
     <div class="container" style="text-align: center; padding-top: 30px;">
         <h1>Results</h1>
-        <p class="results" style="display:none;">{{results}}</p>
+        <p class="userCar" style="display:none;">{{user_car}}</p>
+        <p class="electricCars" style="display:none;">{{electric_cars}}</p>
+        <p class="electricCarComparisons" style="display:none;">{{electric_car_comparisons}}</p>
         <hr>
         <br>
         <div class="" style="display:flex; justify-content:flex-start;">
@@ -50,31 +52,29 @@
                 <h3 style='text-align: left' class="yourCarTitle"></h3>
                 <hr>
                 <img class="car-img yourCarImg"></img>
-                <div class="yourCarSpecs" style="padding-top: 10px;"></div>
+                <div class="yourCarSpecs" style="padding-top: 20px;"></div>
             </div>
 
             <div style="flex:1; margin-right: 10px;" class="shadow-sm p-3 bg-white rounded"
                 style=" padding: 10px !important; padding-bottom: 40px !important;">
                 <div style="display: flex; justify-content: space-between;">
                     <div>
-                        <div>Recommended Car</div>
+                        <div style="margin-left: -23px">Recommended Car</div>
                         <h3 class="recommendedCarTitle"></h3>
                     </div>
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Dropdown button
+
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
+
                         </div>
                     </div>
                 </div>
                 <hr>
                 <img class="car-img recommendedCarImg"></img>
-                <div class="recommendedCarSpecs" style="padding-top: 10px;"></div>
+                <div class="recommendedCarSpecs" style="padding-top: 20px;"></div>
             </div>
         </div>
         <br>
@@ -137,6 +137,8 @@
     <br>
 </body>
 <script>
+    var totalData = ``
+
     var green = "#28a745"
     var red = "#dc3545"
 
@@ -146,47 +148,68 @@
     var yourCarImg = document.querySelector(".yourCarImg")
     var recommendedCarImg = document.querySelector(".recommendedCarImg")
 
-    var data = document.querySelector(".results").innerHTML
-    data = JSON.parse(data)
-    console.log(data)
-    // console.log(data)
-    //  data = JSON.parse(myVal.replace('"', "\\\"");)
-    // console.log(data['images'])
-    // yourCarTitle.innerHTML = "Lexus RX-350 xx"
-    yourCarTitle.innerHTML = data.car1.make + " " + data.car1.model
-    // recommendedCarTitle.innerHTML = "Tesla Model Y xx"
-    recommendedCarTitle.innerHTML = data.car2.make + " " + data.car2.model
-
-    // yourCarImg.src = "https://pictures.topspeed.com/IMG/crop/201801/quick-specs-2017-lex-44_1600x0w.jpg"
-    yourCarImg.src = data.car1.image
-    // recommendedCarImg.src = "https://cdn.motor1.com/images/mgl/kjLpP/s1/ford-mustang-mach-e-debuts-in-europe.jpg"
-    recommendedCarImg.src = data.car2.image
-
-    var template = `<p style="text-align: left; padding-top:10px" class=""></p>`
-    var totalData = ``
+    var userCar = JSON.parse(document.querySelector(".userCar").innerHTML)
+    var electricCars = JSON.parse(document.querySelector(".electricCars").innerHTML)
+    var electricCarComparisons = JSON.parse(document.querySelector(".electricCarComparisons").innerHTML)
 
     function addToTemplate(s, units) {
         totalData +=
             `<div style="text-align: left; padding-left: 10px;"><p style="font-size:20px; text-align: left; display: inline-block">${s}</p><p style=" text-align: left; padding-left: 4px; font-size:15px; font-weight:bold;  display: inline-block">${units}</p></div>`
     }
 
-    var c1 = data.car1
-    var c2 = data.car2
+    function addCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
 
-    addToTemplate("$" + Math.round(c1.price.number), c1.price.units)
-    addToTemplate(Math.round(c1.range.number), c1.range.units + " range")
-    addToTemplate(Math.round(c1.torque.number), c1.torque.units)
-    addToTemplate(Math.round(c1.top_speed), c1.top_speed.units)
+    function setIndex(i) {totalData = ``
+        var recoCar = electricCars.ElectricCars[i]
+        document.querySelector("#dropdownMenuButton").innerHTML = recoCar.make + " " + recoCar.model
+        console.log(electricCars)
+        yourCarTitle.innerHTML = userCar.make + " " + userCar.model
+        recommendedCarTitle.innerHTML = recoCar.make + " " + recoCar.model
 
-    $('.yourCarSpecs').append(totalData);
+        yourCarImg.src = userCar.image
+        recommendedCarImg.src = recoCar.image
 
-    totalData = ``
+        var template = `<p style="text-align: left; padding-top:10px" class=""></p>`
 
-    addToTemplate("$" + Math.round(c2.price.number), c2.price.units)
-    addToTemplate(Math.round(c2.range.number), c2.range.units + " range")
-    addToTemplate(Math.round(c2.torque.number), c2.torque.units)
 
-    $('.recommendedCarSpecs').append(totalData);
+        console.log(electricCars)
+        var c1 = userCar
+        var c2 = electricCars.ElectricCars[i]
+        console.log("C@")
+        console.log(c2)
+
+        addToTemplate("$" + addCommas(Math.round(c1.price.number)), c1.price.units)
+        addToTemplate(Math.round(c1.range.number), c1.range.units + " range")
+        addToTemplate(Math.round(c1.torque.number), c1.torque.units)
+        addToTemplate(Math.round(c1.topspeed.number), c1.topspeed.units)
+        $('.yourCarSpecs').empty()
+        $('.yourCarSpecs').append(totalData);
+
+        totalData = ``
+
+        addToTemplate("$" + addCommas(Math.round(c2.price.number)), c2.price.units)
+        addToTemplate(Math.round(c2.range.number), c2.range.units + " range")
+        addToTemplate(Math.round(c2.torque.number), c2.torque.units)
+        addToTemplate(Math.round(c2.topspeed.number), c2.topspeed.units)
+        $('.recommendedCarSpecs').empty()
+
+        $('.recommendedCarSpecs').append(totalData);
+
+    }
+
+    setIndex(0)
+
+
+    var count = 0;
+    for (var x of electricCars.ElectricCars) {
+
+        $('.dropdown-menu').append(
+            `<a class="dropdown-item" onclick="setIndex(${count})" set>${x.make + " " + x.model}</a>`);
+        count++;
+    }
+
 
     function animate(circle, percent, start, end) {
         circle.animate(percent, {
@@ -270,5 +293,6 @@
         }
     });
 </script>
+
 </html>
 {% endblock %}
