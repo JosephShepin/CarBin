@@ -138,13 +138,6 @@ class Car:
             'highway_mileage' : self.calculate_percent_change(other._highway_mileage['number'], self._highway_mileage['number']),
         }
 
-    def get_all_comparison(self, other):
-        return {
-            'car1'        : self.get_dict(),
-            'car2'        : other.get_dict(),
-            'comparision' : self.compare(other)
-        }
-
     def find_similar(self, other_cars : list):
         similar = other_cars[0]
         for car in other_cars:
