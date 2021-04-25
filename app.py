@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect
 from car import Car
-from licensedetect import get_plate_from_image
+from licensedetect import get_plate_from_path
 #from pyzbar import pyzbar
 from PIL import Image
 import os, json
