@@ -1,5 +1,5 @@
 
-import cv2, imutils, pytesseract
+import cv2, imutils, pytesseract, sys
 import numpy as np
 
 
