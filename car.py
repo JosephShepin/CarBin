@@ -174,6 +174,24 @@ class Car:
             'units'  : 'kilogram/kilometer'
         }
 
+    def get_emissions_over_time(self, years, is_new = True):
+        emission = 0.0
+        emission_change = calculate_emissions()
+        emissions_over_time = {}
+        for i in range(years):
+            emissions_over_time[str(date.today().year + years)] = emission
+            emission += emission_change
+        return emissions_over_time
+
+    def get_cost_over_time(self, years, is_new = True):
+        cost = 0.0
+        cost_change = calculate_emissions()
+        costs_over_time = {}
+        for i in range(years):
+            costns_over_time[str(date.today().year + years)] = cost
+            costn += cost_change
+        return costs_over_time
+
     @staticmethod
     def fetch_carxse(vin: str, is_plate: bool = False):
         if is_plate:
@@ -215,11 +233,11 @@ class Car:
 
     @staticmethod
     def newton_meters_to_foot_pounds(nm: float):
-        return nm/0.73756
+        return nm * 0.73756
 
     @staticmethod
     def kilometers_per_hour_to_miles_per_hour(kmph: float):
-        return kmph/0.6213712
+        return kmph * 0.6213712
 
     def get_dict(self):
         return {
