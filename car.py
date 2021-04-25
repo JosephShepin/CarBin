@@ -197,6 +197,7 @@ class Car:
         costs_over_time = {}
         for i in range(years):
             costs_over_time[str(date.today().year + i)] = cost
+            cost *= 1.03
             cost += cost_change
         return costs_over_time
 
