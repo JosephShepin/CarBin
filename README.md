@@ -19,6 +19,9 @@ Thanks 3rd-parties!
  - Cffi
  - Click
  - Gunicorn
+ - Charts.Js
+ - JQuery
+ - Bootstrap CDN
 
 Obligatory thanks for the help!
  - StackOverflow
