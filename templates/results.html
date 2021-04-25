@@ -118,14 +118,14 @@
             <div class="shadow-sm p-3 bg-white rounded"
                 style="margin-right: 10px; padding: 10px !important; padding-bottom: 40px !important;">
                 <div style="height: 300px !important; width:500px !important;">
-                    <h5>Carbon Footprint over time</h5>
+                    <h5>Carbon Footprint Over Time</h5>
                     <canvas id="costGraph" width="200" height="200"></canvas>
                 </div>
             </div>
             <div class="shadow-sm p-3 bg-white rounded"
                 style="margin-left: 10px; padding: 10px !important; padding-bottom: 40px !important;">
                 <div style="height: 300px !important; width:500px !important; ">
-                    <h5>Cost over time</h5>
+                    <h5>Maintence Cost Over Time</h5>
                     <canvas id="carbonGraph" width="200" height="200"></canvas>
                 </div>
             </div>
@@ -169,8 +169,17 @@
 
 
     function addToTemplate(s, units, percent, invert) {
+
         totalData +=
             `<div><div style="text-align: left; padding-left: 10px; margin-top: -10px"><p style="font-size:20px; text-align: left; display: inline-block">${s}</p><p style=" text-align: left; padding-left: 4px; font-size:15px; font-weight:bold;  display: inline-block">${units}</p><p style="display: inline-block; padding-left: 10px; color:${percent < 0 ||  (units == "USD" && percent > 0) ? red : green}">${percent == "" ? "" :Math.round(percent*10)/10}${percent == "" ? "" : "%"}</p></div></div>`
+
+        if (units == "MPG" || units == "MPGe") {
+            totalData += `<hr style='margin-top:-10px;'>`
+        }
+
+
+
+
     }
 
     function addCommas(x) {
@@ -195,8 +204,8 @@
         totalData = ``
         var recoCar = electricCars.ElectricCars[i]
         document.querySelector("#dropdownMenuButton").innerHTML = recoCar.make + " " + recoCar.model
-        yourCarTitle.innerHTML = userCar.make + " " + userCar.model
-        recommendedCarTitle.innerHTML = recoCar.make + " " + recoCar.model
+        yourCarTitle.innerHTML = userCar.year + " " + userCar.make + " " + userCar.model
+        recommendedCarTitle.innerHTML = recoCar.year + " " + recoCar.make + " " + recoCar.model
 
         yourCarImg.src = userCar.image
         recommendedCarImg.src = recoCar.image
@@ -204,6 +213,7 @@
         comp.torque = (-1) * comp.torque
 
         var c1 = userCar
+        console.log(c1)
         var c2 = electricCars.ElectricCars[i]
 
         var evFootprint = (footprintTime)[i]
@@ -237,10 +247,11 @@
             gasCarData.push(data[keys[key]])
         }
 
-        addToTemplate("Year ", Math.round(c1.year), "", false)
-        addToTemplate("$" + addCommas(Math.round(c1.price.number)), c1.price.units, "", true)
+        addToTemplate(Math.round(c1.highwaymileage.number), "MPG", "", false)
+        // addToTemplate("Year ", Math.round(c1.year), "", false)
+        addToTemplate("Estimated Value $" + addCommas(Math.round(c1.price.number)), c1.price.units, "", true)
         addToTemplate(Math.round(c1.range.number), c1.range.units + " range", "", false)
-        addToTemplate(Math.round(c1.torque.number), c1.torque.units, "", false)
+        addToTemplate(Math.round(c1.torque.number), c1.torque.units + " Of Torque", "", false)
         // addToTemplate(Math.round(c1.topspeed.number), c1.topspeed.units)
         addToTemplate(Math.round(c1.horsepower.number), c1.horsepower.units, "", false)
         // addToTemplate(Math.round(c1.topspeed.number),c1.topspeed.units + " Top Speed")
@@ -248,19 +259,18 @@
         $('.yourCarSpecs').append(totalData);
 
         totalData = ``
-        addToTemplate("Year ", Math.round(c2.year), "", false)
-        addToTemplate("$" + addCommas(Math.round(c2.price.number)), c2.price.units, comp.price, true)
+        addToTemplate(Math.round(c2.highwaymileage.number), "MPGe", "", false)
+
+        // addToTemplate("Year ", Math.round(c2.year), "", false)
+        addToTemplate("MSRP $" + addCommas(Math.round(c2.price.number)), c2.price.units, comp.price, true)
         addToTemplate(Math.round(c2.range.number), c2.range.units + " of range", comp.range, false)
-        addToTemplate(Math.round(c2.torque.number), c2.torque.units, comp.range, comp.torque, false)
+        addToTemplate(Math.round(c2.torque.number), c2.torque.units + " Of Torque", comp.range, comp.torque, false)
         // addToTemplate(Math.round(c2.topspeed.number), c2.topspeed.units)
         addToTemplate(Math.round(c2.horsepower.number), c2.horsepower.units, comp.horsepower, false)
         // addToTemplate(Math.round(c2.topspeed.number),c2.topspeed.units + " Top Speed")
 
         $('.recommendedCarSpecs').empty()
         $('.recommendedCarSpecs').append(totalData);
-
-
-
 
         var ctx = document.getElementById('carbonGraph');
         var lables = keys
@@ -288,6 +298,7 @@
                 responsive: true
             }
         });
+
         var ctx = document.getElementById('costGraph');
         costGraph = new Chart(ctx, {
             type: 'line',
@@ -313,9 +324,7 @@
             }
         });
     }
-
     setIndex(0)
-
 
     var count = 0;
     for (var x of electricCars.ElectricCars) {
@@ -324,7 +333,6 @@
             `<a class="dropdown-item" onclick="setIndex(${count})" set>${x.make + " " + x.model}</a>`);
         count++;
     }
-
 
     function animate(circle, percent, start, end) {
         circle.animate(percent, {
@@ -336,7 +344,7 @@
             }
         });
     }
-
+    
     // MoveCircularProgressBar("bar1", .2); //envirnmental impact
     // MoveCircularProgressBar("bar2", .4); //short term cost viability
     // MoveCircularProgressBar("bar3", .6); //long term cost viability
@@ -359,9 +367,7 @@
             }
         });
         animate(circle, percent, start, end)
-
     }
 </script>
-
 </html>
 {% endblock %}
