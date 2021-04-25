@@ -8,6 +8,9 @@ Introducing: CarBin; a tool that compares popular electric cars to your current 
 <img  width="350"  src="https://storage.googleapis.com/car-switch/example1/thing1.png" border="0">
 <img  width="350"  src="https://storage.googleapis.com/car-switch/example1/thing2.png" border="0">
 
+In order to make the end user's experience as convenient and intuitive as possible, CarBin supports three methods of providing your car's information: you can enter either your vehicle’s VIN number, license plate number, or simply take a photo of your license plate and let our ai+computer vision system find the exact make and model.
+ 
+
 Thanks 3rd-parties!
  - CarsXE [API](https://api.carsxe.com/docs)
  - CarQuery [API](https://www.carqueryapi.com/documentation/)
