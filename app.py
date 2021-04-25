@@ -14,6 +14,7 @@ def main():
 def about():
     return render_template('about.html')
 
+"""
 @app.route('/plateresults', methods=["GET"])
 def plate_results():
     plate = request.args.get('plate', "")
@@ -31,11 +32,15 @@ def vin_results():
 @app.route('/pictureresults', methods=["GET"])
 def picture_results():
     pass
+"""
 
-@app.route('/results/<car>', methods=["GET"])
+@app.route('/results', methods=["GET"])
 def results(car):
 
-    car=loads.json(car)
+    if request.args.get('plate', '') != None:
+        car = Car(plate,False,False,True)
+    else:
+        car = Car(vin)
 
     ecars=[]
     for id_num in list(json.loads(open('electric-cars.json','r').read())['Electric Cars']):
