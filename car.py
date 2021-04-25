@@ -25,8 +25,8 @@ class Car:
         self._highway_mileage = data['highway_mileage']
         self._image           = data['image']
 
-        #if not is_new:
-        #        self._price['number'] *= .86 ** (date.today().year - self._year)
+        if not is_new:
+                self._price['number'] *= .86 ** (date.today().year - self._year)
 
 
     def get_gas_data(self, vin: str):
@@ -51,12 +51,12 @@ class Car:
                 'units'     : str(data['attributes']['manufacturer_suggested_retail_price'].split(' ', 1)[1])
             },
             'top_speed'         : {
-                'number'    : float(data['model_top_speed_kph']),
-                'units'     : 'kilometers/hour'
+                'number'    : Car.kilometers_per_hour_to_miles_per_hour(float(data['model_top_speed_kph'])),
+                'units'     : 'miles/hour'
             },
             'torque'            : {
-                'number'    : float(data['model_engine_torque_nm']),
-                'units'     : 'newtonmeters'
+                'number'    : Car.newton_meters_to_foot_pounds(float(data['model_engine_torque_nm'])),
+                'units'     : 'footpounds'
             },
             'horsepower'        : {
                 'number'    : float(data['model_engine_power_ps']),
@@ -96,12 +96,12 @@ class Car:
                 'units'     : 'USD'
             },
             'top_speed'         : {
-                'number'    : float(data['Top Speed']),
-                'units'     : 'kilometers/hour'
+                'number'    : Car.kilometers_per_hour_to_miles_per_hour(float(data['Top Speed'])),
+                'units'     : 'miles/hour'
             },
             'torque'            : {
-                'number'    : float(data['Mean Torque']),
-                'units'     : 'newtonmeters'
+                'number'    : Car.newton_meters_to_foot_pounds(float(data['Mean Torque'])),
+                'units'     : 'footpounds'
             },
             'horsepower'        : {
                 'number'    : float(data['Mean Horsepower']),
@@ -153,16 +153,26 @@ class Car:
         return 1 / (.55 * (1 / self._city_mileage) + .45 * (1 / self._highway_mileage))
 
     def calculate_emissions(self):
-        if is_electric:
-            return 0.0
+        emission = 0
+        if self.is_electric:
+            emission = 13.76 / calculate_average_mileage()
         else:
-            return 5.4805 / calculate_average_mileage()
+            emission = 5.4805 / calculate_average_mileage()
+        return {
+            'number' : emission,
+            'units'  : 'kilogram/kilometer'
+        }
 
     def calculate_annual_cost(self):
-        if is_electric:
-            return 57915 / calculate_average_mileage()
+        cost = 0
+        if self.is_electric:
+            cost = 57915 / calculate_average_mileage()
         else:
-            return 40500 / calculate_average_mileage()
+            cost = 40500 / calculate_average_mileage()
+        return {
+            'number' : cost,
+            'units'  : 'kilogram/kilometer'
+        }
 
     @staticmethod
     def fetch_carxse(vin: str):
@@ -198,6 +208,14 @@ class Car:
     @staticmethod
     def calculate_percent_change(x: float,y: float):
         return 100*(1-x/y)
+
+    @staticmethod
+    def newton_meters_to_foot_pounds(nm: float):
+        return nm/0.73756
+
+    @staticmethod
+    def kilometers_per_hour_to_miles_per_hour(kmph: float):
+        return kmph/0.6213712
 
     def get_dict(self):
         return {
