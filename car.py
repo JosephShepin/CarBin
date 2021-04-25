@@ -160,7 +160,7 @@ class Car:
 
     def calculate_annual_cost(self):
         if is_electric:
-            return 0.0
+            return 57915 / calculate_average_mileage()
         else:
             return 40500 / calculate_average_mileage()
 
