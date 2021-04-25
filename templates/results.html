@@ -32,7 +32,7 @@
     }
 
     .car-img {
-        width: 400px;
+        height: 200px;
         border-radius: 5px;
     }
 </style>
@@ -71,7 +71,7 @@
 
             <div style="flex:1; margin-right: 10px;" class="shadow-sm p-3 bg-white rounded"
                 style="padding: 10px !important; padding-bottom: 40px !important;">
-                <div style="text-align: left;">Recommended Car</div>
+                <div style="text-align: left;" class="recDiv"></div>
 
                 <h3 style="text-align: left;" class="recommendedCarTitle"></h3>
 
@@ -111,7 +111,7 @@
                 </div>
             </div>
         </div> -->
-<br>
+        <br>
         <h2>Envirnmental Impact And Cost Analysis</h2>
         <hr>
         <div class="graphs" style="display:flex;">
@@ -150,8 +150,8 @@
     var costGraph = {
         "foo": "a"
     }
-
-
+    var recDiv = document.querySelector(".recDiv")
+    recDiv.innerHTML = "Recommended Car"
     var footprintTime = JSON.parse(document.querySelector(".footprintTime").innerHTML)
     var userCarFootprintTime = JSON.parse(document.querySelector(".userCarFootprintTime").innerHTML)
 
@@ -187,18 +187,15 @@
     }
 
     function setIndex(i) {
-
-        console.log("carbonGraph")
-        console.log(typeof carbonGraph)
-        console.log(Object.keys(carbonGraph).includes("foo"))
+        if (i == 0) {
+            recDiv.innerHTML = "Recommended Car"
+        } else {
+            recDiv.innerHTML = ""
+        }
         if (!Object.keys(carbonGraph).includes("foo")) {
-            console.log("DESTROYING")
             carbonGraph.destroy();
             costGraph.destroy();
-        } else {
-            console.log("NOT DESTROTING")
-        }
-
+        } 
 
         var comp = electricCarComparisons.ElectricCarComparisons[i]
         totalData = ``
@@ -344,7 +341,7 @@
             }
         });
     }
-    
+
     // MoveCircularProgressBar("bar1", .2); //envirnmental impact
     // MoveCircularProgressBar("bar2", .4); //short term cost viability
     // MoveCircularProgressBar("bar3", .6); //long term cost viability
@@ -369,5 +366,6 @@
         animate(circle, percent, start, end)
     }
 </script>
+
 </html>
 {% endblock %}
