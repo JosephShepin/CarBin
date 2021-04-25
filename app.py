@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect
 from car import Car
-from pyzbar import pyzbar
+#from pyzbar import pyzbar
 from PIL import Image
 import os, json
 
@@ -37,7 +37,7 @@ def picture_results():
 @app.route('/results', methods=["GET"])
 def results():
 
-    if request.args.get('plate', '') != None:
+    if request.args.get('plate', '') != '':
         car = Car(request.args.get('plate', ''),False,False,True)
     else:
         car = Car(request.args.get('vin', ''))
