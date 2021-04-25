@@ -30,7 +30,7 @@ class Car:
 
 
     def get_gas_data(self, vin: str):
-        data = self.fetch_carxse(vin)
+        data = Car.fetch_carxse(vin)
         data.update(self.fetch_carqueryapi(data['attributes']['make'], data['attributes']['model'], data['attributes']['year'], data['attributes']['trim']))
         city_mileage    = float(data['attributes']['city_mileage'].split(' ', 1)[0])
         highway_mileage = float(data['attributes']['highway_mileage'].split(' ', 1)[0])
@@ -134,7 +134,6 @@ class Car:
             'horsepower'      : self.calculate_percent_change(other._horsepower['number'], self._horsepower['number']),
             'acceleration'    : self.calculate_percent_change(other._acceleration['number'], self._acceleration['number']),
             'range'           : self.calculate_percent_change(other._range['number'], self._range['number']),
-            'car2'            : other._city_mileage['number'],
             'city_mileage'    : self.calculate_percent_change(other._city_mileage['number'], self._city_mileage['number']),
             'highway_mileage' : self.calculate_percent_change(other._highway_mileage['number'], self._highway_mileage['number']),
         }
@@ -148,6 +147,10 @@ class Car:
 
     def find_similar(self):
          pass
+
+    def calculate_emissions(self):
+        average_mileage = 1 / (.55 * (1 / self._city_mileage) + .45 * (1 / self._highway_mileage))
+        return 5.4805 / average_mileage
 
     @staticmethod
     def fetch_carxse(vin: str):
