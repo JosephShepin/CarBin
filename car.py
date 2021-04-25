@@ -150,14 +150,14 @@ class Car:
         return similar
 
     def calculate_average_mileage(self):
-        return 1 / (.55 * (1 / self._city_mileage) + .45 * (1 / self._highway_mileage))
+        return 1 / (.55 * (1 / self._city_mileage['number']) + .45 * (1 / self._highway_mileage['number']))
 
     def calculate_emissions(self):
         emission = 0
         if self._is_electric:
-            emission = 13.76 / calculate_average_mileage()
+            emission = 13.76 / self.calculate_average_mileage()
         else:
-            emission = 5.4805 / calculate_average_mileage()
+            emission = 5.4805 / self.calculate_average_mileage()
         return {
             'number' : emission,
             'units'  : 'kilogram/kilometer'
@@ -166,9 +166,9 @@ class Car:
     def calculate_annual_cost(self):
         cost = 0
         if self._is_electric:
-            cost = 57915 / calculate_average_mileage()
+            cost = 57915 / self.calculate_average_mileage()
         else:
-            cost = 40500 / calculate_average_mileage()
+            cost = 40500 / self.calculate_average_mileage()
         return {
             'number' : cost,
             'units'  : 'kilogram/kilometer'
@@ -176,7 +176,7 @@ class Car:
 
     def get_emissions_over_time(self, years, is_new = True):
         emission = 0.0
-        emission_change = self.calculate_emissions()
+        emission_change = self.calculate_emissions()['number']
         emissions_over_time = {}
         for i in range(years):
             emissions_over_time[str(date.today().year + years)] = emission
@@ -185,11 +185,11 @@ class Car:
 
     def get_cost_over_time(self, years, is_new = True):
         cost = 0.0
-        cost_change = self.calculate_annual_cost()
+        cost_change = self.calculate_annual_cost()['number']
         costs_over_time = {}
         for i in range(years):
-            costns_over_time[str(date.today().year + years)] = cost
-            costn += cost_change
+            costs_over_time[str(date.today().year + years)] = cost
+            cost += cost_change
         return costs_over_time
 
     @staticmethod
