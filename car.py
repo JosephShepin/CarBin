@@ -7,7 +7,7 @@ class Car:
         if (is_electric):
             data = self.get_electric_data(id)
         else:
-            data = self.get_gas_data(id, id_is_plate)
+            data = self.get_gas_data(id,False)
         self._make            = data['make']
         self._model           = data['model']
         self._year            = data['year']
