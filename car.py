@@ -176,7 +176,7 @@ class Car:
 
     def get_emissions_over_time(self, years, is_new = True):
         emission = 0.0
-        emission_change = calculate_emissions()
+        emission_change = self.calculate_emissions()
         emissions_over_time = {}
         for i in range(years):
             emissions_over_time[str(date.today().year + years)] = emission
@@ -185,7 +185,7 @@ class Car:
 
     def get_cost_over_time(self, years, is_new = True):
         cost = 0.0
-        cost_change = calculate_emissions()
+        cost_change = self.calculate_cost()
         costs_over_time = {}
         for i in range(years):
             costns_over_time[str(date.today().year + years)] = cost
