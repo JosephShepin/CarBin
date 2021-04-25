@@ -18,7 +18,7 @@ def results():
 @app.route('/get_car', methods=["GET"])
 def postData():
     vin = request.args.get('vin', "")
-    car = Car(vin).get_all_comparision(Car('0', True))
+    car = Car(vin).get_all_comparison(Car('0', True))
     return render_template('results.html',results=json.dumps(car))
 
 
