@@ -12,7 +12,6 @@ Thanks 3rd-parties!
  - CarsXE API
  - CarQuery API
  - Flask
- - PyTesseract
  - OpenCV
  - Werkzeug
  - IMUtils
@@ -20,6 +19,7 @@ Thanks 3rd-parties!
  - Click
  - Gunicorn
  - Bootstrap CDN
+ - PyTesseract and [docs](docs)
  - Chart.js and [example code](https://www.chartjs.org/docs/latest/samples/bar/vertical.html)
  - Jquery and [docs](https://api.jquery.com/ajaxSend/)
 
