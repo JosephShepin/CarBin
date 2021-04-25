@@ -51,7 +51,6 @@ def get_plate_from_image(img):
 
 def get_plate_from_path(path: str):
     img = cv2.imread(path)
-    raise Exception(path)
     return get_plate_from_image(img)
 
 if __name__ == '__main__':

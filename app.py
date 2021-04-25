@@ -5,7 +5,7 @@ from licensedetect import get_plate_from_path
 from PIL import Image
 import os, json
 
-UPLOAD_FOLDER = '/home/w1n5t0n/docs/SHS-Hacks-2021/upload'
+UPLOAD_FOLDER = '/root/SHS-Hacks-2021/upload'
 ALLOWED_EXTENSIONS = set(['jpg'])
 
 app = Flask(__name__)
