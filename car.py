@@ -2,12 +2,12 @@ import sys, requests, json, re
 from datetime import date
 
 class Car:
-    def __init__(self, id: str, is_electric: bool = False, is_new: bool = False):
+    def __init__(self, id: str, is_electric: bool = False, is_new: bool = False, id_is_plate: bool = False):
         self._is_electric = is_electric
         if (is_electric):
             data = self.get_electric_data(id)
         else:
-            data = self.get_gas_data(id)
+            data = self.get_gas_data(id, id_is_plate)
         self._make            = data['make']
         self._model           = data['model']
         self._year            = data['year']
@@ -29,8 +29,8 @@ class Car:
                 self._price['number'] *= .86 ** (date.today().year - self._year)
 
 
-    def get_gas_data(self, vin: str):
-        data = Car.fetch_carxse(vin)
+    def get_gas_data(self, vin: str, is_plate: bool = False):
+        data = Car.fetch_carxse(vin, is_plate)
         data.update(self.fetch_carqueryapi(data['attributes']['make'], data['attributes']['model'], data['attributes']['year'], data['attributes']['trim']))
         city_mileage    = float(data['attributes']['city_mileage'].split(' ', 1)[0])
         highway_mileage = float(data['attributes']['highway_mileage'].split(' ', 1)[0])
@@ -175,7 +175,11 @@ class Car:
         }
 
     @staticmethod
-    def fetch_carxse(vin: str):
+    def fetch_carxse(vin: str, is_plate: bool = False):
+        if is_plate:
+            url = f'http://api.carsxe.com/platedecoder?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&plate={vin}&state=MD&format=json'
+            r = requests.get(url)
+            vin = json.loads(r.text)['vin']
         url = 'https://storage.googleapis.com/car-switch/respoonse.json'
         #url =  f' http://api.carsxe.com/specs?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&vin={vin}'
         r = requests.get(url)
