@@ -25,8 +25,8 @@ class Car:
         self._highway_mileage = data['highway_mileage']
         self._image           = data['image']
 
-        #if not is_new:
-        #        self._price['number'] *= .86 ** (date.today().year - self._year)
+        if not is_new:
+                self._price['number'] *= .86 ** (date.today().year - self._year)
 
 
     def get_gas_data(self, vin: str):
