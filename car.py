@@ -171,7 +171,7 @@ class Car:
             cost = 40500 / self.calculate_average_mileage()
         return {
             'number' : cost,
-            'units'  : 'kilogram/kilometer'
+            'units'  : 'kilogram'
         }
 
     def get_emissions_over_time(self, years, is_new = True):
@@ -192,7 +192,7 @@ class Car:
         cost = 0.0
         if is_new:
             cost = self._price['number']
-        cost_change = self.calculate_annual_cost()['number'] * 13500
+        cost_change = self.calculate_annual_cost()['number']
         costs_over_time = {}
         for i in range(years):
             costs_over_time[str(date.today().year + i)] = cost
