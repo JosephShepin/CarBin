@@ -204,7 +204,7 @@ class Car:
     @staticmethod
     def fetch_carxse(vin: str, is_plate: bool = False):
         if is_plate:
-            url = f'http://api.carsxe.com/platedecoder?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&plate={vin}&state=MD&format=json'
+            url = f'http://api.carsxe.com/platedecoder?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&plate={vin}&state=IL&format=json'
             r = requests.get(url)
             vin = json.loads(r.text)['vin']
         url = 'https://storage.googleapis.com/car-switch/respoonse.json'
