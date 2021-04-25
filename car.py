@@ -229,7 +229,7 @@ class Car:
 
     @staticmethod
     def calculate_percent_change(x: float,y: float):
-        return 100*(1-x/y)
+        return -100 * (1 - x / y)
 
     @staticmethod
     def newton_meters_to_foot_pounds(nm: float):
