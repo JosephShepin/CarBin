@@ -185,7 +185,7 @@ class Car:
 
     def get_cost_over_time(self, years, is_new = True):
         cost = 0.0
-        cost_change = self.calculate_cost()
+        cost_change = self.calculate_annual_cost()
         costs_over_time = {}
         for i in range(years):
             costns_over_time[str(date.today().year + years)] = cost
