@@ -45,26 +45,26 @@ class Car:
             'year'              : int(data['attributes']['year']),
             'trim'              : data['attributes']['trim'],
             'style'             : data['attributes']['style'],
-            'type'              : data['model_body'],
+            'type'              : data['model_body'] if 'model_body' in data else '',
             'fuel_type'         : data['attributes']['fuel_type'],
             'price'             : {
                 'number'    : float(data['attributes']['manufacturer_suggested_retail_price'].split(' ', 1)[0][1:].replace(',', '')),
                 'units'     : str(data['attributes']['manufacturer_suggested_retail_price'].split(' ', 1)[1])
             },
             'top_speed'         : {
-                'number'    : Car.kilometers_per_hour_to_miles_per_hour(float(data['model_top_speed_kph'])),
+                'number'    : Car.kilometers_per_hour_to_miles_per_hour(float(data['model_top_speed_kph'])) if 'model_top_speed_kph' in data else 0.0,
                 'units'     : 'miles/hour'
             },
             'torque'            : {
-                'number'    : Car.newton_meters_to_foot_pounds(float(data['model_engine_torque_nm'])),
+                'number'    : Car.newton_meters_to_foot_pounds(float(data['model_engine_torque_nm'])) if 'model_engine_torque_nm' in data else 0.0,
                 'units'     : 'footpounds'
             },
             'horsepower'        : {
-                'number'    : float(data['model_engine_power_ps']),
+                'number'    : float(data['model_engine_power_ps']) if 'model_engine_power_ps' in data else 0.0,
                 'units'     : 'horsepower'
             },
             'acceleration'      : {
-                'number'    : float(data['model_0_to_100_kph']),
+                'number'    : float(data['model_0_to_100_kph']) if 'model_0_to_100_kph' in data else 0.0,
                 'units'     : '100 km/h/s'
             },
             'range'     : {
@@ -237,7 +237,10 @@ class Car:
 
     @staticmethod
     def calculate_percent_change(x: float,y: float):
-        return -100 * (1 - x / y)
+        if y != 0.0:
+            return -100 * (1 - x / y)
+        else:
+            return 0.0
 
     @staticmethod
     def newton_meters_to_foot_pounds(nm: float):
