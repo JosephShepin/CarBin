@@ -35,15 +35,18 @@ def results():
     for ecar in ecars:
         ecar_comparisons.append(car.compare(ecar))
         json_ecars.append(ecar.get_dict())
-        footprint_time.append(ecar.get_cost_over_time(10))
-        cost_time.append(ecar.get_emissions_over_time(10))
+        footprint_time.append(ecar.get_emissions_over_time(10))
+        cost_time.append(ecar.get_cost_over_time(10))
 
     user_car_json = car.get_JSON()
     electric_cars_json = json.dumps({'ElectricCars':json_ecars}).replace('_','')
     electric_car_comparisons_json = json.dumps({'ElectricCarComparisons':ecar_comparisons}).replace('_','')
     footprint_time = json.dumps(footprint_time)
-    cost_time = json.dumps(cost_time )
-    return render_template('results.html',user_car=user_car_json,electric_cars=electric_cars_json,electric_car_comparisons=electric_car_comparisons_json,footprint_time=footprint_time,cost_time=cost_time)
+    cost_time = json.dumps(cost_time)
+    user_car_footprint_time = json.dumps(car.get_emissions_over_time(10))
+    user_car_cost_time = json.dumps(car.get_cost_over_time(10))
+
+    return render_template('results.html',user_car=user_car_json,electric_cars=electric_cars_json,electric_car_comparisons=electric_car_comparisons_json,footprint_time=footprint_time,cost_time=cost_time,user_car_footprint_time=user_car_footprint_time,user_car_cost_time=user_car_cost_time)
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
