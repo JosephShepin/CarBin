@@ -128,50 +128,22 @@ class Car:
 
     def compare(self, other):
         return {
-            'images'           : {
-                'car1'   : self._image,
-                'car2'   : self._image
-            },
-            'price'           : {
-                'car1'   : self._price['number'],
-                'car2'   : other._price['number'],
-                'change' : self.calculate_percent_change(other._price['number'], self._price['number']),
-            },
-            'top_speed'       : {
-                'car1'   : self._top_speed['number'],
-                'car2'   : other._top_speed['number'],
-                'change' : self.calculate_percent_change(other._top_speed['number'], self._top_speed['number']),
-            },
-            'torque'          : {
-                'car1'   : self._torque['number'],
-                'car2'   : other._torque['number'],
-                'change' : self.calculate_percent_change(other._torque['number'], self._torque['number']),
-            },
-            'horsepower'      : {
-                'car1'   : self._horsepower['number'],
-                'car2'   : other._horsepower['number'],
-                'change' : self.calculate_percent_change(other._horsepower['number'], self._horsepower['number']),
-            },
-            'acceleration'    : {
-                'car1'   : self._acceleration['number'],
-                'car2'   : other._acceleration['number'],
-                'change' : self.calculate_percent_change(other._acceleration['number'], self._acceleration['number']),
-            },
-            'range'   : {
-                'car1'   : self._range['number'],
-                'car2'   : other._range['number'],
-                'change' : self.calculate_percent_change(other._range['number'], self._range['number']),
-            },
-            'city_mileage'    : {
-                'car1'   : self._city_mileage['number'],
-                'car2'   : other._city_mileage['number'],
-                'change' : self.calculate_percent_change(other._city_mileage['number'], self._city_mileage['number']),
-            },
-            'highway_mileage' : {
-                'car1'   : self._highway_mileage['number'],
-                'car2'   : other._highway_mileage['number'],
-                'change' : self.calculate_percent_change(other._highway_mileage['number'], self._highway_mileage['number']),
-            }
+            'price'           : self.calculate_percent_change(other._price['number'], self._price['number']),
+            'top_speed'       : self.calculate_percent_change(other._top_speed['number'], self._top_speed['number']),
+            'torque'          : self.calculate_percent_change(other._torque['number'], self._torque['number']),
+            'horsepower'      : self.calculate_percent_change(other._horsepower['number'], self._horsepower['number']),
+            'acceleration'    : self.calculate_percent_change(other._acceleration['number'], self._acceleration['number']),
+            'range'           : self.calculate_percent_change(other._range['number'], self._range['number']),
+            'car2'            : other._city_mileage['number'],
+            'city_mileage'    : self.calculate_percent_change(other._city_mileage['number'], self._city_mileage['number']),
+            'highway_mileage' : self.calculate_percent_change(other._highway_mileage['number'], self._highway_mileage['number']),
+        }
+
+    def get_all_comparision(self, other):
+        return {
+            "car1"      : self.get_dict(),
+            "car2"      : other.get_dict(),
+            comparision : self.comapre(other)
         }
 
     def find_similar(self):
@@ -179,8 +151,8 @@ class Car:
 
     @staticmethod
     def fetch_carxse(vin: str):
-        url = 'https://storage.googleapis.com/car-switch/respoonse.json'
-        #url =  f'https://api.carsxe.com/specs?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&vin={vin}
+        #url = 'https://storage.googleapis.com/car-switch/respoonse.json'
+        url =  f'https://api.carsxe.com/specs?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&vin={vin}'
         r = requests.get(url)
         return json.loads(r.text)
 
@@ -196,7 +168,7 @@ class Car:
 
     @staticmethod
     def fetch_image(make: str, model: str):
-        url = f"http://api.carsxe.com/images?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&make={make}&model={model}"
+        url = f'http://api.carsxe.com/images?key=rnldxnjyx_s9pe9t3ov_kyb2nnr21&make={make}&model={model}'
         r = requests.get(url)
         return json.loads(r.text)["images"][0]["link"]
 
@@ -211,23 +183,28 @@ class Car:
     def calculate_percent_change(x: float,y: float):
         return 100*(1-x/y)
 
-#    def getJSON(self):
-#        return json.dumps({self._make            = data['make']
-#        self._model
-#        self._year
-#        self._trim
-#        self._style
-#        self._type
-#        self._fuel_type
-#        self._price
-#        self._top_speed
-#        self._torque
-#        self._horsepower
-#        self._acceleration
-#        self._range
-#        self._city_mileage
-#        self._highway_mileage
-#        self._image
+    def get_dict(self):
+        return {
+            "make"            : self._make,
+            "model"           : self._model,
+            "year"            : self._year,
+            "trim"            : self._trim,
+            "style"           : self._style,
+            "type"            : self._type,
+            "fuel_type"       : self._fuel_type,
+            "price"           : self._price,
+            "top_speed"       : self._top_speed,
+            "torque"          : self._torque,
+            "horsepower"      : self._horsepower,
+            "acceleration"    : self._acceleration,
+            "range"           : self._range,
+            "city_mileage"    : self._city_mileage,
+            "highway_mileage" : self._highway_mileage,
+            "image"           : self._image,
+        }
+
+    def get_JSON(self):
+        return json.dumps(self.get_dict())
 
     def __str__(self):
          return f'''
