@@ -30,7 +30,7 @@ def results():
         file = request.files['imgfile']
         path=os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
         file.save(path)
-        car = Car(get_plate_from_image(path),False,False,True)
+        car = Car(get_plate_from_path(path),False,False,True)
 
     ecars=[]
     for id_num in list(json.loads(open('electric-cars.json','r').read())['Electric Cars']):
