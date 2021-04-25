@@ -10,6 +10,10 @@ app = Flask(__name__)
 def main():
     return render_template('collect.html')
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 @app.route('/results', methods=["GET"])
 def results():
 
