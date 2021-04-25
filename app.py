@@ -1,10 +1,15 @@
 from flask import Flask, render_template, request, redirect
 from car import Car
+from licensedetect import get_plate_from_image
 #from pyzbar import pyzbar
 from PIL import Image
 import os, json
 
+UPLOAD_FOLDER = '/root/SHS-Hacks-2021/upload'
+ALLOWED_EXTENSIONS = set(['jpg'])
+
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
 def main():
@@ -39,8 +44,18 @@ def results():
 
     if request.args.get('plate', '') != '':
         car = Car(request.args.get('plate', ''),False,False,True)
-    else:
+    elif request.args.get('vin', '') != '':
         car = Car(request.args.get('vin', ''))
+    else
+        file = request.files['file']
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            path=os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(path)
+            car = Car(get_plate_from_image(path),False,False,True)
 
     ecars=[]
     for id_num in list(json.loads(open('electric-cars.json','r').read())['Electric Cars']):
