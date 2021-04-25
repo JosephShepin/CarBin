@@ -4,6 +4,10 @@ Transportation makes up 29% of U.S. carbon emissions. Despite being around for o
 
 Introducing: CarBin; a tool that compares popular electric cars to your current car to inform you of the benefits and feasibility of switching to electric.
 
+
+<img  width="350"  src="https://storage.googleapis.com/car-switch/example1/thing1.png" border="0">
+<img  width="350"  src="https://storage.googleapis.com/car-switch/example1/thing2.png" border="0">
+
 Thanks 3rd-parties!
  - CarsXE API
  - CarQuery API
@@ -19,5 +23,6 @@ Thanks 3rd-parties!
 Obligatory thanks for the help!
  - StackOverflow
  - Medium
+
 
 > CarBin: The Future is Electric
