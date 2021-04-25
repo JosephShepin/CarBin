@@ -1,7 +1,7 @@
 
 import cv2, imutils, pytesseract, sys
 import numpy as np
-
+pytesseract.pytesseract.tesseract_cmd = 'D:/iyadh/AppData/Local/Programs/Tesseract-OCR/tesseract.exe'
 
 def get_plate_from_image(img):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -10,8 +10,10 @@ def get_plate_from_image(img):
 
     kernel = np.ones((1,1),np.uint8)
     contrast = cv2.dilate(gray,kernel,iterations=2)
-    thr,contrast = cv2.threshold(a, 127, 255, cv2.THRESH_OTSU)
-
+    thr,contrast = cv2.threshold(contrast, 0, 255, cv2.THRESH_OTSU + cv2.THRESH_BINARY)
+    if len(sys.argv) > 1:
+        cv2.imshow("a", contrast)
+        cv2.waitKey(1000)
     # General algorithim https://medium.com/programming-fever/license-plate-recognition-using-opencv-python-7611f85cdd6c
     cnts = cv2.findContours(contrast.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     cnts = imutils.grab_contours(cnts)
@@ -40,8 +42,10 @@ def get_plate_from_image(img):
 
     final = cv2.GaussianBlur(final,(3,3), 0)
     thr,final = cv2.threshold(final,0,255,cv2.THRESH_OTSU + cv2.THRESH_BINARY_INV)
-
-    text = pytesseract.image_to_string(final, config='--psm 6', lang='eng')
+    text = pytesseract.image_to_string(final, config='--psm 6 -c tessedit_char_whitelist=0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', lang='eng')
+    if len(sys.argv) > 1:
+        cv2.imshow("a", final)
+        cv2.waitKey(1000)
     return text
 
 if __name__ == '__main__':
@@ -51,4 +55,4 @@ if __name__ == '__main__':
 
     img = cv2.imread(sys.argv[1])
     text = get_plate_from_image(cv2.resize(img, (600,400)))
-    print(text)
+    print(f'Text: {text}')
