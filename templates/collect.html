@@ -3,26 +3,36 @@
     <div class="container">
         <br>
         <div class="shadow-sm p-3 mb-5 bg-white rounded">
-            <h2>Welcome To XXXX</h2>
+        	<h2>Welcome To XXXX</h2>
             <p>Find a comparable electric car that's better for the envirnment, and exceeds your expectations.</p>
-           <hr>
+           	<hr>
             <p>Get started by enter your car's VIN number</p>
-            <div>
-                <form method="GET" action="/results" style="margin-bottom:-12px">
-                    <div class="input-group mb-3">
-                        <input required name="vin" class="form-control" id="vin-input" style="display:inline-block"
-                            value="JTJZK1BA1D2009651" placeholder="Car's Vin Number" />
-                        <div class="input-group-append">
-                            <input style="display:inline-block; background-color: #2ECC71; color: white;" type="submit" class="btn"></input>
-                        </div>
-                    </div>
-                </form>
-            </div>
+			<form method="GET" action="/results" style="margin-bottom:-12px">
+				<div class="input-group mb-3">
+					<input required name="vin" class="form-control" id="vin-input" style="display:inline-block" value="JTJZK1BA1D2009651" placeholder="Car's Vin Number" />
+					<div class="input-group-append">
+						<input style="display:inline-block; background-color: #2ECC71; color: white;" type="submit" class="btn"></input>
+					</div>
+				</div>
+			</form>
+
+			<form method="GET" action="/results" style="margin-bottom:-12px">
+				<div class="input-group mb-3">
+					<input required name="make" class="form-control" id="make-input" style="display:inline-block" value="Lexus" placeholder="Car's Make" />
+					<input required name="model" class="form-control" id="model-input" style="display:inline-block" value="RX 350" placeholder="Car's Model" />
+					<input required name="year" class="form-control" id="year-input" style="display:inline-block" value="2013" placeholder="Car's Year" />
+					<div class="input-group-append">
+						<input style="display:inline-block; background-color: #2ECC71; color: white;" type="submit" class="btn"></input>
+					</div>
+				</div>
+			</form>
+
             <!-- <h3>Or Upload Barcode</h3> -->
             <!-- <form method="post" action="/upload" enctype="multipart/form-data">
               <input type="file" name="file1">
               <input type="submit">
             </form> -->
+
         </div>
     </div>
 </body>
